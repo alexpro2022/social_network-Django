@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+   Записи сообщества: {{ group.title }}
+{% endblock %}
+
+
+{% block content %}
+
+  <div class="container py-5">
+
+    <h5>{{ group.title }}   ({{ group.posts.count }} постов)</h5>    
+    <p>{{ group.description|linebreaksbr }}</p><hr>
+
+    {# {% include 'posts/includes/post_list_view.html' %} #}
+    {% for post in page_obj %}  
+      {% include 'posts/includes/post_view.html' %}
+      {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}
+    {% include 'posts/includes/paginator.html' %}
+
+  </div>
+
+{% endblock %}

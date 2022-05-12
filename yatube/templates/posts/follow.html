@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Подписки{% endblock %} 
+
+
+{% block content %}
+  
+  <div class="container py-5">
+
+    <h5>Подписки</h5> 
+
+    {% include 'posts/includes/switcher.html' %}
+    
+    {% include 'posts/includes/post_list_view.html' %}
+    
+  </div>
+  
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'includes/form_templates/form_generic.html' %}
+
+
+{% block user_title %}
+  {% if is_edit %}Редактировать пост {% else %}Новый пост {% endif %}
+{% endblock %}
+
+
+{% block card_header %}
+  {% if is_edit %}Редактировать пост {% else %}Новый пост {% endif %} 
+{% endblock %}
+ 
+
+{% block card_body %}
+
+  {% include 'includes/form_templates/form_errors_handler.html' %}
+  
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% include 'includes/form_templates/for_field_in_form.html' %}
+
+    <div class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary">
+        {% if is_edit %}Сохранить{% else %}Добавить{% endif %}   
+      </button>
+    </div>
+
+  </form>
+
+{% endblock %}

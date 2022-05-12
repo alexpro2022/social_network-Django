@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    Профайл пользователя {{ author.get_full_name }}
+{% endblock %}
+
+
+{% block content %}
+
+  <div class="container py-5"> 
+
+    <h5>Профиль пользователя: @{{author.username}} /{{ author.get_full_name }}/ 
+      {# Так тоже работает <h3>Всего постов:  {{ page_obj.paginator.count }}</h3> #}
+
+      {% if author != user %}
+        {% if following %}
+          <a class="btn btn-light"
+            href="{% url 'posts:profile_unfollow' author.username %}" role="button">
+            Отписаться
+          </a>
+        {% else %}
+          <a class="btn btn-primary"
+            href="{% url 'posts:profile_follow' author.username %}" role="button">
+            Подписаться
+          </a>
+        {% endif %}
+      {% endif %}
+    </h5>
+    <h6>
+      Подписчиков: {{ author.following.count }}<br>
+      Подписан: {{ author.follower.count}}<br>
+      Записей: {{ author.posts.count }}
+    </h6><hr>
+
+    {% include 'posts/includes/post_list_view.html' %}
+    
+  </div> 
+
+{% endblock %}

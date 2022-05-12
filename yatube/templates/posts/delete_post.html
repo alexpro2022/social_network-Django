@@ -1,0 +1,26 @@
+{% extends 'includes/form_templates/form_generic.html' %}
+
+
+{% block user_title %}
+    Удалить пост
+{% endblock %}
+
+
+{% block card_header %}
+    Удалить пост
+{% endblock %}
+ 
+
+{% block card_body %}
+
+<form method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    {{ form }}
+    <div class="col-md-6 offset-md-4">
+        <button type="submit" class="btn btn-primary">
+          Удалить   
+        </button>
+      </div>
+</form>
+
+{% endblock %}

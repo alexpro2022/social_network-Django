@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from ..urls import app_name
+
 
 SLUG = 'Test-slug'
 USERNAME = 'author'
@@ -24,4 +26,4 @@ class RoutesTest(TestCase):
         """Проверка соответствия урл его namespace:name."""
         for url, name, args in CASES:
             with self.subTest(url=url):
-                self.assertEqual(url, reverse(f'posts:{name}', args=args))
+                self.assertEqual(url, reverse(f'{app_name}:{name}', args=args))

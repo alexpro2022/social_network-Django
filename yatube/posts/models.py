@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-# from core.models import CreatedFieldModel
+from core.models import CreatedFieldModel
 
 
 User = get_user_model()
@@ -20,20 +20,16 @@ class Group(models.Model):
         return self.title
 
 
-class Post(models.Model):
+class Post(CreatedFieldModel):
     STR_METHOD_TEMPLATE = (
         '{group}, '
         '{username}, '
-        '{pub_date:%Y-%m-%d}, '
+        '{created:%Y-%m-%d}, '
         '{text:.100}'
     )
     text = models.TextField(
         'Текст',
         help_text='Введите или отредактируйте текст'
-    )
-    pub_date = models.DateTimeField(
-        'Дата публикации',
-        auto_now_add=True
     )
     author = models.ForeignKey(
         User,
@@ -56,28 +52,23 @@ class Post(models.Model):
         blank=True
     )
 
-    class Meta:
+    class Meta(CreatedFieldModel.Meta):
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
-        ordering = ('-pub_date',)
 
     def __str__(self):
         return self.STR_METHOD_TEMPLATE.format(
             group=self.group,
             username=self.author.username,
-            pub_date=self.pub_date,
+            created=self.created,
             text=self.text
         )
 
 
-class Comment(models.Model):
+class Comment(CreatedFieldModel):
     text = models.TextField(
         'Текст комментария',
         help_text='Введите текст комментария'
-    )
-    created = models.DateTimeField(
-        'Дата создания',
-        auto_now_add=True,
     )
     author = models.ForeignKey(
         User,
@@ -92,7 +83,7 @@ class Comment(models.Model):
         verbose_name='Комментарий к посту',
     )
 
-    class Meta:
+    class Meta(CreatedFieldModel.Meta):
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
 
@@ -103,10 +94,26 @@ class Follow(models.Model):
         on_delete=models.CASCADE,
         related_name='follower',
         verbose_name='Подписанный пользователь',
+        null=True
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='following',
         verbose_name='Автор подписки',
+        null=True
     )
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'author'],
+                name='unique_follow'
+            ),
+            models.CheckConstraint(
+                check=~models.Q(user=models.F('author')),
+                name='no_self_follow'
+            ),
+        ]

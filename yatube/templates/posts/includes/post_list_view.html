@@ -1,4 +1,4 @@
-{% for post in page_obj %}  
+{% for post in page_obj %} 
     {% include 'posts/includes/post_view.html' %}
     {% if not forloop.last %}<hr>{% endif %}
 {% endfor %}

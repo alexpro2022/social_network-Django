@@ -13,12 +13,15 @@
     <h5>{{ group.title }}   ({{ group.posts.count }} постов)</h5>    
     <p>{{ group.description|linebreaksbr }}</p><hr>
 
-    {# {% include 'posts/includes/post_list_view.html' %} #}
-    {% for post in page_obj %}  
-      {% include 'posts/includes/post_view.html' %}
+    {% for post in page_obj %} 
+      {% with group_info=False profile_info=True post_info=True %}
+        {% include 'posts/includes/post_view.html' %}
+      {% endwith %}
       {% if not forloop.last %}<hr>{% endif %}
     {% endfor %}
+
     {% include 'posts/includes/paginator.html' %}
+    
 
   </div>
 

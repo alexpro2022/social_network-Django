@@ -39,7 +39,7 @@ class PostModelTest(TestCase):
             Post.STR_METHOD_TEMPLATE.format(
                 text=self.post.text,
                 username=self.post.author.username,
-                pub_date=self.post.pub_date,
+                created=self.post.created,
                 group=self.post.group,
             )
         )
@@ -50,7 +50,7 @@ class PostModelTest(TestCase):
         self.assertEqual(Post._meta.verbose_name_plural, 'Посты')
         for field, expected_value in {
             'text': 'Текст',
-            'pub_date': 'Дата публикации',
+            'created': 'Дата создания',
             'author': 'Автор',
             'group': 'Группа',
         }.items():

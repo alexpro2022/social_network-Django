@@ -3,17 +3,17 @@
     <ul class="list-group list-group-flush"><ul>
       
       <li class="list-group-item">
-        {% if request.resolver_match.view_name != 'posts:post_detail' %}
+        {% if post_info %}
           <a class="btn btn-light"
             href="{% url 'posts:post_detail' post.id %}">Пост: подробнее
           </a>
         {% endif %}<br> 
         
-          создан: {{ post.pub_date|date:"d E Y" }}<br>
+          создан: {{ post.created|date:"d E Y" }}<br>
           комментариев: {{ post.comments.count }}    
       </li>  
 
-      {% if request.resolver_match.view_name != 'posts:profile' %}
+      {% if profile_info %}
         <li class="list-group-item">
           <a class="btn btn-light"
             href="{% url 'posts:profile' post.author.username %}">
@@ -25,7 +25,7 @@
         </li>
       {% endif %}
 
-      {% if not group and post.group %}         
+      {% if group_info and post.group %}         
         <li class="list-group-item">
           <a class="btn btn-light"
             href="{% url 'posts:group_list' post.group.slug %}">
@@ -41,7 +41,7 @@
   <article class="col-12 col-md-4">
     {% load thumbnail %}
 
-    {% if request.resolver_match.view_name == 'posts:post_detail' %}
+    {% if not post_info %}
       {% thumbnail post.image  "500x500" as im %}
         <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
       {% endthumbnail %}

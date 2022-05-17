@@ -25,6 +25,7 @@ class PostURLsTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.user = User.objects.create_user(username='user')
         cls.author = User.objects.create_user(
             username=USERNAME,
             first_name='Ivan',
@@ -41,21 +42,18 @@ class PostURLsTest(TestCase):
             group=cls.group
         )
         cls.follow = Follow.objects.create(
-            user=User.objects.create_user(username='noname'),
+            user=cls.user,
             author=cls.author
         )
-        cls.user = User.objects.create_user(username='user')
-        cls.COMMENT_URL = reverse('posts:add_comment', args=[cls.post.pk])
-        cls.EDIT_URL = reverse('posts:post_edit', args=[cls.post.pk])
         cls.POST_URL = reverse('posts:post_detail', args=[cls.post.pk])
-        cls.COMMENT_REDIRECT_LOGIN = f'{LOGIN_URL}?next={cls.COMMENT_URL}'
+        cls.EDIT_URL = reverse('posts:post_edit', args=[cls.post.pk])
         cls.EDIT_REDIRECT_LOGIN = f'{LOGIN_URL}?next={cls.EDIT_URL}'
-
-    def setUp(self):
-        self.another = Client()
-        self.author_client = Client()
-        self.another.force_login(self.user)
-        self.author_client.force_login(self.author)
+        COMMENT_URL = reverse("posts:add_comment", args=[cls.post.pk])
+        cls.COMMENT_REDIRECT_LOGIN = f'{LOGIN_URL}?next={COMMENT_URL}'
+        cls.another = Client()
+        cls.author_client = Client()
+        cls.another.force_login(cls.user)
+        cls.author_client.force_login(cls.author)
 
     def test_url_status_code(self):
         """Проверяет доступность страницы по указанному адресу."""
@@ -69,12 +67,12 @@ class PostURLsTest(TestCase):
             (FOLLOW_URL, self.another, OK),
             (PROFILE_FOLLOW_URL, self.client, FOUND),
             (PROFILE_FOLLOW_URL, self.another, FOUND),
+            (PROFILE_FOLLOW_URL, self.author_client, FOUND),
             (PROFILE_UNFOLLOW_URL, self.client, FOUND),
             (PROFILE_UNFOLLOW_URL, self.another, FOUND),
+            (PROFILE_UNFOLLOW_URL, self.author_client, NOT_FOUND),
             (CREATE_URL, self.client, FOUND),
             (CREATE_URL, self.another, OK),
-            (self.COMMENT_URL, self.client, FOUND),
-            (self.COMMENT_URL, self.another, FOUND),
             (self.EDIT_URL, self.client, FOUND),
             (self.EDIT_URL, self.another, FOUND),
             (self.EDIT_URL, self.author_client, OK),
@@ -92,12 +90,11 @@ class PostURLsTest(TestCase):
             (CREATE_URL, self.client, CREATE_REDIRECT_LOGIN),
             (self.EDIT_URL, self.client, self.EDIT_REDIRECT_LOGIN),
             (self.EDIT_URL, self.another, self.POST_URL),
-            (self.COMMENT_URL, self.client, self.COMMENT_REDIRECT_LOGIN),
-            (self.COMMENT_URL, self.another, self.POST_URL),
             (PROFILE_FOLLOW_URL, self.client, FOLLOW_REDIRECT_LOGIN),
             (PROFILE_FOLLOW_URL, self.another, PROFILE_URL),
+            (PROFILE_FOLLOW_URL, self.author_client, PROFILE_URL),
             (PROFILE_UNFOLLOW_URL, self.client, UNFOLLOW_REDIRECT_LOGIN),
-            (PROFILE_UNFOLLOW_URL, self.another, PROFILE_URL),
+            (PROFILE_UNFOLLOW_URL, self.another, PROFILE_URL)
         ):
             with self.subTest(finish=finish):
                 self.assertRedirects(client.get(url), finish)

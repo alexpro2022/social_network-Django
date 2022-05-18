@@ -12,3 +12,11 @@ def get_image(file_name, content_type):
         ),
         content_type
     )
+
+
+def posts_assertEqual(self, post1, post2):
+    self.assertEqual(post1, post2)
+    self.assertEqual(post1.text, post2.text)
+    self.assertEqual(post1.author, post2.author)
+    self.assertEqual(post1.group, post2.group)
+    self.assertEqual(post1.image, post2.image)

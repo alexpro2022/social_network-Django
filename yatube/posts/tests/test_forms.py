@@ -7,7 +7,7 @@ from django.contrib.auth import get_user
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
-from .utils import get_image
+from .utils import get_image, posts_assertEqual
 from ..forms import CommentForm, PostForm
 from ..models import Comment, Group, Post, User
 
@@ -54,6 +54,12 @@ class PostFormTests(TestCase):
         super().tearDownClass()
         shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
+    def custom_assertEqual(self, post, author, form_data):
+        self.assertEqual(post.author, author)
+        self.assertEqual(post.text, form_data['text'])
+        self.assertEqual(post.group.pk, form_data['group'])
+        self.assertEqual(post.image, f'{IMAGE_FOLDER}{form_data["image"]}')
+
     def test_form_fields_correct_type(self):
         """Проверка корректного типа полей формы в страницах
            создания и редактирования поста."""
@@ -86,12 +92,6 @@ class PostFormTests(TestCase):
                 if is_edit is not None:
                     self.assertEqual(context['is_edit'], is_edit)
 
-    def custom_assertEqual(self, post, author, form_data):
-        self.assertEqual(post.author, author)
-        self.assertEqual(post.text, form_data['text'])
-        self.assertEqual(post.group.pk, form_data['group'])
-        self.assertEqual(post.image, f'{IMAGE_FOLDER}{form_data["image"]}')
-
     def test_authorized_create_post(self):
         """Проверка создания нового поста авторизованным пользователем."""
         form_data = {
@@ -121,7 +121,7 @@ class PostFormTests(TestCase):
             self.client.post(CREATE_URL, data=form_data),
             CREATE_REDIRECT_LOGIN
         )
-        self.assertEqual(len(set(Post.objects.all()) - posts), 0)
+        self.assertEqual(set(Post.objects.all()), posts)
 
     def test_author_editting_post(self):
         """Проверка редактирования автором существующего поста."""
@@ -130,13 +130,12 @@ class PostFormTests(TestCase):
             'group': Group.objects.create(slug='New_group_slug').pk,
             'image': get_image('author_edit.gif', 'image/gif'),
         }
-        init_author = self.post.author
         self.assertRedirects(
             self.author_client.post(self.EDIT_URL, data=form_data),
             self.POST_URL
         )
         post = Post.objects.get(pk=self.post.pk)
-        self.custom_assertEqual(post, init_author, form_data)
+        self.custom_assertEqual(post, self.post.author, form_data)
 
     def test_anonymous_or_not_author_editing_post(self):
         """Попытка анонима или не-автора отредактировать пост."""
@@ -156,12 +155,12 @@ class PostFormTests(TestCase):
             (self.EDIT_URL, self.another, self.POST_URL, another)
         ):
             with self.subTest(url=url):
-                posts = set(Post.objects.all())
+                post = Post.objects.get(pk=self.post.pk)
                 self.assertRedirects(
                     client.post(url, data=form_data),
                     redir_url
                 )
-                self.assertEqual(len(set(Post.objects.all()) - posts), 0)
+                posts_assertEqual(self, post, self.post)
 
     def test_authorized_add_comment(self):
         """Проверка создания комментария к посту
@@ -179,7 +178,7 @@ class PostFormTests(TestCase):
         self.assertEqual(comment.author, self.author)
         self.assertEqual(comment.post, self.post)
 
-    def test_anonymous_create_post_or_comment(self):
+    def test_anonymous_add_comment(self):
         """Попытка анонима создать комментарий."""
         form_data = {'text': 'Test anonymous to create comment'}
         comments = set(Comment.objects.all())
@@ -187,4 +186,4 @@ class PostFormTests(TestCase):
             self.client.post(self.COMMENT_URL, data=form_data),
             self.COMMENT_REDIRECT_LOGIN
         )
-        self.assertEqual(len(set(Comment.objects.all()) - comments), 0)
+        self.assertEqual(set(Comment.objects.all()), comments)

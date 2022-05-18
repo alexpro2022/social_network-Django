@@ -68,7 +68,7 @@ class PostURLsTest(TestCase):
             (PROFILE_FOLLOW_URL, self.author_client, FOUND),
             (PROFILE_UNFOLLOW_URL, self.client, FOUND),
             (PROFILE_UNFOLLOW_URL, self.another, FOUND),
-            (PROFILE_UNFOLLOW_URL, self.author_client, FOUND),
+            (PROFILE_UNFOLLOW_URL, self.author_client, NOT_FOUND),
             (CREATE_URL, self.client, FOUND),
             (CREATE_URL, self.another, OK),
             (self.EDIT_URL, self.client, FOUND),

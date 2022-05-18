@@ -6,7 +6,7 @@ from django.core.cache import cache
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
-from .utils import get_image
+from .utils import get_image, posts_assertEqual
 from ..models import Comment, Follow, Group, Post, User
 from yatube.settings import POSTS_PER_PAGE
 
@@ -23,7 +23,6 @@ FOLLOW_INDEX_URL = reverse('posts:follow_index')
 PROFILE_URL = reverse('posts:profile', args=[USERNAME])
 PROFILE_FOLLOW_URL = reverse('posts:profile_follow', args=[USERNAME])
 PROFILE_UNFOLLOW_URL = reverse('posts:profile_unfollow', args=[USERNAME])
-IMAGE_FOLDER = Post._meta.get_field("image").upload_to
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 
 
@@ -120,11 +119,7 @@ class PostViewsTest(TestCase):
                     self.assertEqual(len(temp), 1)
                     temp = temp[0]
                 post = temp
-                self.assertEqual(post, self.post)
-                self.assertEqual(post.text, self.post.text)
-                self.assertEqual(post.author, self.post.author)
-                self.assertEqual(post.group, self.post.group)
-                self.assertEqual(post.image, self.post.image)
+                posts_assertEqual(self, post, self.post)
 
     def test_intact_author_in_profile_context(self):
         """Автор в контексте Профиля без искажений."""

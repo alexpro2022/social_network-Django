@@ -3,7 +3,7 @@
     <ul class="list-group list-group-flush"><ul>
       
       <li class="list-group-item">
-        {% if post_info %}
+        {% if not no_post_info %}
           <a class="btn btn-light"
             href="{% url 'posts:post_detail' post.id %}">Пост: подробнее
           </a>
@@ -13,7 +13,7 @@
           комментариев: {{ post.comments.count }}    
       </li>  
 
-      {% if profile_info %}
+      {% if not no_profile_info %}
         <li class="list-group-item">
           <a class="btn btn-light"
             href="{% url 'posts:profile' post.author.username %}">
@@ -25,7 +25,7 @@
         </li>
       {% endif %}
 
-      {% if group_info and post.group %}         
+      {% if not no_group_info and post.group %}         
         <li class="list-group-item">
           <a class="btn btn-light"
             href="{% url 'posts:group_list' post.group.slug %}">
@@ -41,7 +41,7 @@
   <article class="col-12 col-md-4">
     {% load thumbnail %}
 
-    {% if not post_info %}
+    {% if no_post_info %}
       {% thumbnail post.image  "500x500" as im %}
         <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
       {% endthumbnail %}

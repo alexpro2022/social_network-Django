@@ -10,10 +10,10 @@
 
     <h5>Последние обновления на сайте</h5>
 
-    {% include 'posts/includes/switcher.html' with index=True follow=False %}
+    {% include 'posts/includes/switcher.html' with index=True %}
 
     {% cache 20 index_page %}
-      {% include 'posts/includes/post_list_view.html' with group_info=True profile_info=True post_info=True %}
+      {% include 'posts/includes/post_list_view.html' %}
     {% endcache %}    
     
   </div>

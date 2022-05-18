@@ -96,7 +96,7 @@ class PostURLsTest(TestCase):
         ):
             with self.subTest(
                 url=url,
-                client=get_user(client).username,
+                username=get_user(client).username,
                 finish=finish
             ):
                 self.assertRedirects(client.get(url), finish)

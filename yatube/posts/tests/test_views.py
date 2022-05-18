@@ -1,7 +1,12 @@
+import shutil
+import tempfile
+
+from django.conf import settings
 from django.core.cache import cache
-from django.test import Client, TestCase
+from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
+from .utils import get_image
 from ..models import Comment, Follow, Group, Post, User
 from yatube.settings import POSTS_PER_PAGE
 
@@ -18,8 +23,11 @@ FOLLOW_INDEX_URL = reverse('posts:follow_index')
 PROFILE_URL = reverse('posts:profile', args=[USERNAME])
 PROFILE_FOLLOW_URL = reverse('posts:profile_follow', args=[USERNAME])
 PROFILE_UNFOLLOW_URL = reverse('posts:profile_unfollow', args=[USERNAME])
+IMAGE_FOLDER = Post._meta.get_field("image").upload_to
+TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 
 
+@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class PostViewsTest(TestCase):
     @classmethod
     def setUpClass(cls):
@@ -37,6 +45,7 @@ class PostViewsTest(TestCase):
             text='Тестовый пост',
             author=cls.author,
             group=cls.group,
+            image=get_image('test_image.gif', 'image.gif')
         )
         cls.comment = Comment.objects.create(
             text='Текст комментария',
@@ -55,6 +64,11 @@ class PostViewsTest(TestCase):
         cls.user_client.force_login(cls.user)
         cls.author_client.force_login(cls.author)
         cls.follower_author_client.force_login(cls.follower_author)
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def test_paginator(self):
         """Проверяем корректную работу паджинатора."""
@@ -84,10 +98,8 @@ class PostViewsTest(TestCase):
     def test_cache(self):
         """Проверяем, что после удаления записи контент главной страницы не меняется.
            После очистки кеша, контент главной страницы изменился."""
-        posts = Post.objects.all()
-        self.assertNotEqual(posts.count(), 0)
         init_content = self.client.get(INDEX_URL).content
-        posts[0].delete()
+        Post.objects.all().delete()
         self.assertEqual(init_content, self.client.get(INDEX_URL).content)
         cache.clear()
         self.assertNotEqual(init_content, self.client.get(INDEX_URL).content)

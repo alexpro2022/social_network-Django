@@ -14,7 +14,7 @@
     <p>{{ group.description|linebreaksbr }}</p><hr>
 
     {% for post in page_obj %} 
-      {% include 'posts/includes/post_view.html' with group_info=False profile_info=True post_info=True %}
+      {% include 'posts/includes/post_view.html' with no_group_info=True %}
       {% if not forloop.last %}<hr>{% endif %}
     {% endfor %}
 

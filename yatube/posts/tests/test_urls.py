@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user
 from django.test import TestCase, Client
 from django.urls import reverse
 
@@ -48,8 +49,6 @@ class PostURLsTest(TestCase):
         cls.POST_URL = reverse('posts:post_detail', args=[cls.post.pk])
         cls.EDIT_URL = reverse('posts:post_edit', args=[cls.post.pk])
         cls.EDIT_REDIRECT_LOGIN = f'{LOGIN_URL}?next={cls.EDIT_URL}'
-        COMMENT_URL = reverse("posts:add_comment", args=[cls.post.pk])
-        cls.COMMENT_REDIRECT_LOGIN = f'{LOGIN_URL}?next={COMMENT_URL}'
         cls.another = Client()
         cls.author_client = Client()
         cls.another.force_login(cls.user)
@@ -59,7 +58,6 @@ class PostURLsTest(TestCase):
         """Проверяет доступность страницы по указанному адресу."""
         for url, client, status_code in (
             (INDEX_URL, self.client, OK),
-            (LOGIN_URL, self.client, OK),
             (GROUP_URL, self.client, OK),
             (self.POST_URL, self.client, OK),
             (PROFILE_URL, self.client, OK),
@@ -70,7 +68,7 @@ class PostURLsTest(TestCase):
             (PROFILE_FOLLOW_URL, self.author_client, FOUND),
             (PROFILE_UNFOLLOW_URL, self.client, FOUND),
             (PROFILE_UNFOLLOW_URL, self.another, FOUND),
-            (PROFILE_UNFOLLOW_URL, self.author_client, NOT_FOUND),
+            (PROFILE_UNFOLLOW_URL, self.author_client, FOUND),
             (CREATE_URL, self.client, FOUND),
             (CREATE_URL, self.another, OK),
             (self.EDIT_URL, self.client, FOUND),
@@ -96,7 +94,11 @@ class PostURLsTest(TestCase):
             (PROFILE_UNFOLLOW_URL, self.client, UNFOLLOW_REDIRECT_LOGIN),
             (PROFILE_UNFOLLOW_URL, self.another, PROFILE_URL)
         ):
-            with self.subTest(finish=finish):
+            with self.subTest(
+                url=url,
+                client=get_user(client).username,
+                finish=finish
+            ):
                 self.assertRedirects(client.get(url), finish)
 
     def test_url_uses_correct_template(self):

@@ -3,7 +3,6 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from ..models import Comment, Follow, Group, Post, User
-from .utils import get_image
 from yatube.settings import POSTS_PER_PAGE
 
 
@@ -38,7 +37,6 @@ class PostViewsTest(TestCase):
             text='Тестовый пост',
             author=cls.author,
             group=cls.group,
-            image=get_image('test_image.gif', 'image.gif')
         )
         cls.comment = Comment.objects.create(
             text='Текст комментария',
@@ -86,9 +84,10 @@ class PostViewsTest(TestCase):
     def test_cache(self):
         """Проверяем, что после удаления записи контент главной страницы не меняется.
            После очистки кеша, контент главной страницы изменился."""
-        post = Post.objects.create(author=self.author)
+        posts = Post.objects.all()
+        self.assertNotEqual(posts.count(), 0)
         init_content = self.client.get(INDEX_URL).content
-        post.delete()
+        posts[0].delete()
         self.assertEqual(init_content, self.client.get(INDEX_URL).content)
         cache.clear()
         self.assertNotEqual(init_content, self.client.get(INDEX_URL).content)
@@ -152,15 +151,23 @@ class PostViewsTest(TestCase):
             ).exists()
         )
 
-    def test_authenticated_user_follow_unfollow_author(self):
+    def test_authenticated_user_follow_author(self):
         """Авторизованный пользователь (не автор) может подписываться
-           на других пользователей и удалять их из подписок."""
+           на других пользователей."""
         self.user_client.get(PROFILE_FOLLOW_URL)
         self.assertTrue(
             Follow.objects.filter(
                 user=self.user,
                 author=self.author
             ).exists()
+        )
+
+    def test_authenticated_user_unfollow_author(self):
+        """Авторизованный пользователь (не автор) может удалять других
+           пользователей из подписок."""
+        Follow.objects.create(
+            user=self.user,
+            author=self.author
         )
         self.user_client.get(PROFILE_UNFOLLOW_URL)
         self.assertFalse(

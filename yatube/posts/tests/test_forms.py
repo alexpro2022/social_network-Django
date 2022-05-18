@@ -3,12 +3,26 @@ import tempfile
 
 from django import forms
 from django.conf import settings
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.shortcuts import get_object_or_404
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
 from ..forms import CommentForm, PostForm
 from ..models import Comment, Group, Post, User
-from .utils import get_image
+
+
+def get_image(file_name, content_type):
+    return SimpleUploadedFile(
+        file_name, (
+            b'\x47\x49\x46\x38\x39\x61\x01\x00'
+            b'\x01\x00\x00\x00\x00\x21\xf9\x04'
+            b'\x01\x0a\x00\x01\x00\x2c\x00\x00'
+            b'\x00\x00\x01\x00\x01\x00\x00\x02'
+            b'\x02\x4c\x01\x00\x3b'
+        ),
+        content_type
+    )
 
 
 USERNAME = 'author'
@@ -73,16 +87,13 @@ class PostFormTests(TestCase):
             self.POST_URL: {'text': forms.fields.CharField}
         }
         for url in FORMS:
+            form = self.author_client.get(url).context['form']
             for field, field_type in FORMS[url].items():
                 with self.subTest(url=url, field=field):
-                    self.assertIsInstance(
-                        self.author_client.get(url).context['form']
-                        .fields[field],
-                        field_type
-                    )
+                    self.assertIsInstance(form.fields[field], field_type)
 
     def test_form_pages_show_correct_context(self):
-        """Шаблоны (create, edit) сформированы с правильным контекстом."""
+        """Шаблоны с формами сформированы с правильным контекстом."""
         for url, form, is_edit in (
             (CREATE_URL, PostForm, False),
             (self.EDIT_URL, PostForm, True),
@@ -94,14 +105,33 @@ class PostFormTests(TestCase):
                 if is_edit is not None:
                     self.assertEqual(context['is_edit'], is_edit)
 
+    def custom_assertFalse(self, form_data):
+        self.assertFalse(
+            Post.objects.filter(
+                text=form_data['text'],
+                group=get_object_or_404(Group, pk=form_data['group']),
+                image=f'{Post._meta.get_field("image").upload_to}'
+                f'{form_data["image"]}'
+            ).exists()
+        )
+
+    def custom_assertEqual(self, post, form_data):
+        self.assertEqual(post.author, self.author)
+        self.assertEqual(post.text, form_data['text'])
+        self.assertEqual(post.group.pk, form_data['group'])
+        self.assertEqual(
+            post.image,
+            f'{Post._meta.get_field("image").upload_to}{form_data["image"]}'
+        )
+
     def test_authorized_create_post(self):
         """Проверка создания нового поста авторизованным пользователем."""
-        posts = set(Post.objects.all())
         form_data = {
-            'text': f'Тестовый пост №{len(posts) + 1}',
+            'text': 'Тестовый пост authorized_test_create',
             'group': self.group.pk,
-            'image': get_image('create.gif', 'image/gif'),
+            'image': get_image('authorized_create.gif', 'image/gif'),
         }
+        posts = set(Post.objects.all())
         self.assertRedirects(
             self.author_client.post(CREATE_URL, data=form_data),
             PROFILE_URL
@@ -109,77 +139,80 @@ class PostFormTests(TestCase):
         posts = set(Post.objects.all()) - posts
         self.assertEqual(len(posts), 1)
         post = posts.pop()
-        self.assertEqual(post.text, form_data['text'])
-        self.assertEqual(post.group.pk, form_data['group'])
-        self.assertEqual(
-            post.image,
-            f'{post._meta.get_field("image").upload_to}{form_data["image"]}'
-        )
-        self.assertEqual(post.author, self.author)
+        self.custom_assertEqual(post, form_data)
 
-    def test_authorized_add_comment(self):
-        """Проверка создания комментария к посту
-           авторизованным пользователем."""
-        form_data = {'text': 'Проверка создания комментария к посту.'}
-        count = Comment.objects.count()
+    def test_anonymous_create_post(self):
+        """Попытка анонима создать пост."""
+        form_data = {
+            'text': 'Тестовый пост anonymous_test_create',
+            'group': self.group.pk,
+            'image': get_image('anonymous_create.gif', 'image/gif'),
+        }
         self.assertRedirects(
-            self.author_client.post(self.COMMENT_URL, data=form_data),
-            self.POST_URL
+            self.client.post(CREATE_URL, data=form_data),
+            CREATE_REDIRECT_LOGIN
         )
-        self.assertEqual(Comment.objects.count(), count + 1)
-        comment = Comment.objects.all()[0]
-        self.assertEqual(comment.text, form_data['text'])
-        self.assertEqual(comment.author, self.author)
-        self.assertEqual(comment.post, self.post)
-
-    def test_anonymous_create_post_or_comment(self):
-        """Попытка анонима создать пост/комментарий."""
-        TEXT = 'Test anonymous accsess to create post/comment'
-        for url, object_, redir_url in (
-            (CREATE_URL, Post, CREATE_REDIRECT_LOGIN),
-            (self.COMMENT_URL, Comment, self.COMMENT_REDIRECT_LOGIN)
-        ):
-            with self.subTest(url=url):
-                self.assertRedirects(
-                    self.client.post(url, data={'text': TEXT}),
-                    redir_url
-                )
-                self.assertFalse(
-                    object_.objects.filter(text=TEXT,).exists()
-                )
+        self.custom_assertFalse(form_data)
 
     def test_author_editting_post(self):
         """Проверка редактирования автором существующего поста."""
         form_data = {
             'text': f'Тестовый пост №{self.post.pk} изменен',
             'group': Group.objects.create(slug='New_group_slug').pk,
-            'image': get_image('edit.gif', 'image/gif'),
+            'image': get_image('author_edit.gif', 'image/gif'),
         }
         self.assertRedirects(
             self.author_client.post(self.EDIT_URL, data=form_data),
             self.POST_URL
         )
         post = Post.objects.get(pk=self.post.pk)
-        self.assertEqual(post.text, form_data['text'])
-        self.assertEqual(post.group.pk, form_data['group'])
-        self.assertEqual(
-            post.image,
-            f'{post._meta.get_field("image").upload_to}{form_data["image"]}'
-        )
-        self.assertEqual(post.author, self.post.author)
+        self.custom_assertEqual(post, form_data)
 
-    def test_anonymous_not_author_editing_post(self):
-        """Попытка анонима/не-автора отредактировать пост."""
-        TEXT = 'Test anonymous/not-author accsess to edit post'
-        for url, client, redir_url in (
-            (self.EDIT_URL, self.client, self.EDIT_REDIRECT_LOGIN),
-            (self.EDIT_URL, self.another, self.POST_URL)
+    def test_anonymous_or_not_author_editing_post(self):
+        """Попытка анонима или не-автора отредактировать пост."""
+        group = Group.objects.create(slug='New_group_slug')
+        anonymous = {
+            'text': 'Test anonymous to edit post',
+            'group': group.pk,
+            'image': get_image('anonymous_edit.gif', 'image/gif'),
+        }
+        another = {
+            'text': 'Test another to edit post',
+            'group': group.pk,
+            'image': get_image('another_edit.gif', 'image/gif'),
+        }
+        for url, client, redir_url, form_data in (
+            (self.EDIT_URL, self.client, self.EDIT_REDIRECT_LOGIN, anonymous),
+            (self.EDIT_URL, self.another, self.POST_URL, another)
         ):
             with self.subTest(url=url):
                 self.assertRedirects(
-                    client.post(url, data={'text': TEXT}),
+                    client.post(url, data=form_data),
                     redir_url
                 )
-                self.assertFalse(
-                    Post.objects.filter(text=TEXT,).exists()
-                )
+                self.custom_assertFalse(form_data)
+
+    def test_authorized_add_comment(self):
+        """Проверка создания комментария к посту
+           авторизованным пользователем."""
+        form_data = {'text': 'Проверка создания комментария к посту.'}
+        self.assertRedirects(
+            self.author_client.post(self.COMMENT_URL, data=form_data),
+            self.POST_URL
+        )
+        self.assertEqual(Comment.objects.count(), 1)
+        comment = Comment.objects.all()[0]
+        self.assertEqual(comment.text, form_data['text'])
+        self.assertEqual(comment.author, self.author)
+        self.assertEqual(comment.post, self.post)
+
+    def test_anonymous_create_post_or_comment(self):
+        """Попытка анонима создать комментарий."""
+        form_data = {'text': 'Test anonymous to create comment'}
+        self.assertRedirects(
+            self.client.post(self.COMMENT_URL, data=form_data),
+            self.COMMENT_REDIRECT_LOGIN
+        )
+        self.assertFalse(
+            Comment.objects.filter(text=form_data['text']).exists()
+        )

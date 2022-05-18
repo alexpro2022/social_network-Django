@@ -9,11 +9,10 @@
 
     <h5>Подписки</h5> 
 
-    {% with index=False %}{% include 'posts/includes/switcher.html' %}{% endwith %}
+    {% include 'posts/includes/switcher.html' with index=False follow=True %}
     
-    {% with group_info=True profile_info=True post_info=True %}
-      {% include 'posts/includes/post_list_view.html' %}
-    {% endwith %}
+    {% include 'posts/includes/post_list_view.html' with group_info=True profile_info=True post_info=True %}
+
     
   </div>
   

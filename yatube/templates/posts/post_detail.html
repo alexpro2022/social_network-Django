@@ -20,9 +20,7 @@
       <hr>
     {% endif %} 
 
-    {% with group_info=True profile_info=True post_info=False %}
-      {% include 'posts/includes/post_view.html' %}
-    {% endwith %}
+    {% include 'posts/includes/post_view.html' with group_info=True profile_info=True post_info=False %}
 
     {% include 'posts/includes/comments_list.html' %}
 

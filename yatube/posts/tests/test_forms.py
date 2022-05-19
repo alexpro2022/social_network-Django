@@ -155,12 +155,15 @@ class PostFormTests(TestCase):
             (self.EDIT_URL, self.another, self.POST_URL, another)
         ):
             with self.subTest(url=url):
-                post = Post.objects.get(pk=self.post.pk)
                 self.assertRedirects(
                     client.post(url, data=form_data),
                     redir_url
                 )
-                posts_assertEqual(self, post, self.post)
+                posts_assertEqual(
+                    self,
+                    self.post,
+                    Post.objects.get(pk=self.post.pk)
+                )
 
     def test_authorized_add_comment(self):
         """Проверка создания комментария к посту

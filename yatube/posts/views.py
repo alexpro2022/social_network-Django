@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+# from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic.edit import DeleteView
-from django.urls import reverse_lazy
+# from django.views.generic.edit import DeleteView
+# from django.urls import reverse_lazy
 
 from .forms import CommentForm, PostForm
 from .models import Follow, Group, Post, User
@@ -82,6 +82,20 @@ def post_edit(request, post_id):
 
 
 @login_required
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if post.author != request.user:
+        return redirect('posts:post_detail', post_id=post_id)
+    if request.method == 'POST':
+        author = post.author
+        post.delete()
+        return redirect('posts:profile', username=author)
+    return render(request, 'posts/delete_post.html', {
+        'post': post
+    })
+
+
+@login_required
 def add_comment(request, post_id):
     form = CommentForm(request.POST or None)
     if form.is_valid():
@@ -119,7 +133,24 @@ def profile_unfollow(request, username):
     return redirect('posts:profile', username=username)
 
 
+'''
+
+@login_required
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if post.author != request.user:
+        post.delete()
+    return redirect('posts:index')
+
+
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'posts/delete_post.html'
     success_url = reverse_lazy('posts:index')
+
+
+
+    def delete(request, *args, **kwargs):
+        if request.user == Post.author:
+            super.delete(request, *args, **kwargs)
+'''

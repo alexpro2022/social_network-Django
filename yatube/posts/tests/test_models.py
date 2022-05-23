@@ -83,7 +83,7 @@ class GroupModelTest(TestCase):
             description=DESCRIPTION,
         )
 
-    def test_group_model_method(self):
+    def test_group_model_str_method(self):
         """Проверяем, что у модели группы корректно работает __str__."""
         self.assertEqual(str(self.group), self.group.title)
 

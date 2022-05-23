@@ -43,6 +43,7 @@ class PostFormTests(TestCase):
         cls.COMMENT_REDIRECT_LOGIN = f'{LOGIN_URL}?next={cls.COMMENT_URL}'
         cls.EDIT_URL = reverse('posts:post_edit', args=[cls.post.pk])
         cls.EDIT_REDIRECT_LOGIN = f'{LOGIN_URL}?next={cls.EDIT_URL}'
+        cls.DELETE_URL = reverse('posts:post_delete', args=[cls.post.pk])
         cls.POST_URL = reverse('posts:post_detail', args=[cls.post.pk])
         cls.author_client = Client()
         cls.author_client.force_login(cls.author)
@@ -190,3 +191,57 @@ class PostFormTests(TestCase):
             self.COMMENT_REDIRECT_LOGIN
         )
         self.assertEqual(set(Comment.objects.all()), comments)
+
+    def test_author_delete_post(self):
+        """Проверка удаления поста автором."""
+        self.assertEqual(Post.objects.count(), 1)
+        new_group = Group.objects.create(slug='Delete_slug')
+        post = Post.objects.create(
+            author=self.user,
+            group=new_group
+        )
+        self.assertEqual(Post.objects.count(), 2)
+        self.assertTrue(
+            Post.objects.filter(
+                author=self.user,
+                group=new_group
+            ).exists()
+        )
+        self.assertRedirects(
+            self.another.post(
+                reverse('posts:post_delete', args=[post.pk])),
+            reverse('posts:profile', args=[self.user])
+        )
+        self.assertEqual(Post.objects.count(), 1)
+        self.assertFalse(
+            Post.objects.filter(
+                author=self.user,
+                group=new_group
+            ).exists()
+        )
+
+    def test_not_author_cannot_delete_post(self):
+        """Проверка - не автор не может удалить пост."""
+        self.assertEqual(Post.objects.count(), 1)
+        new_group = Group.objects.create(slug='Delete_slug')
+        post = Post.objects.create(
+            author=self.user,
+            group=new_group
+        )
+        DELETE_URL = reverse("posts:post_delete", args=[post.pk])
+        for client, redir_url in (
+            (self.client, f'{LOGIN_URL}?next={DELETE_URL}'),
+            (self.author_client, reverse("posts:post_detail", args=[post.pk])),
+        ):
+            with self.subTest(client=get_user(client)):
+                self.assertRedirects(
+                    client.post(reverse('posts:post_delete', args=[post.pk])),
+                    redir_url
+                )
+                self.assertEqual(Post.objects.count(), 2)
+                self.assertTrue(
+                    Post.objects.filter(
+                        author=self.user,
+                        group=new_group
+                    ).exists()
+                )

@@ -14,13 +14,12 @@
 {% block card_body %}
 
 <form method="post">{% csrf_token %}
-    <p>Are you sure you want to delete "{{ object }}"?</p>
-    {{ form }}
+    <p>Are you sure you want to delete "{{ post }}"?</p>
     <div class="col-md-6 offset-md-4">
         <button type="submit" class="btn btn-primary">
           Удалить   
         </button>
-      </div>
+    </div>
 </form>
 
 {% endblock %}

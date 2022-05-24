@@ -44,6 +44,7 @@ class PostFormTests(TestCase):
         cls.EDIT_URL = reverse('posts:post_edit', args=[cls.post.pk])
         cls.EDIT_REDIRECT_LOGIN = f'{LOGIN_URL}?next={cls.EDIT_URL}'
         cls.DELETE_URL = reverse('posts:post_delete', args=[cls.post.pk])
+        cls.DELETE_REDIRECT_LOGIN = f'{LOGIN_URL}?next={cls.DELETE_URL}'
         cls.POST_URL = reverse('posts:post_detail', args=[cls.post.pk])
         cls.author_client = Client()
         cls.author_client.force_login(cls.author)
@@ -54,12 +55,6 @@ class PostFormTests(TestCase):
     def tearDownClass(cls):
         super().tearDownClass()
         shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
-
-    def custom_assertEqual(self, post, author, form_data):
-        self.assertEqual(post.author, author)
-        self.assertEqual(post.text, form_data['text'])
-        self.assertEqual(post.group.pk, form_data['group'])
-        self.assertEqual(post.image, f'{IMAGE_FOLDER}{form_data["image"]}')
 
     def test_form_fields_correct_type(self):
         """Проверка корректного типа полей формы в страницах
@@ -93,6 +88,13 @@ class PostFormTests(TestCase):
                 if is_edit is not None:
                     self.assertEqual(context['is_edit'], is_edit)
 
+# --------------Authirized/Author---------------------------
+    def custom_assertEqual(self, post, author, form_data):
+        self.assertEqual(post.author, author)
+        self.assertEqual(post.text, form_data['text'])
+        self.assertEqual(post.group.pk, form_data['group'])
+        self.assertEqual(post.image, f'{IMAGE_FOLDER}{form_data["image"]}')
+
     def test_authorized_create_post(self):
         """Проверка создания нового поста авторизованным пользователем."""
         form_data = {
@@ -110,6 +112,30 @@ class PostFormTests(TestCase):
         post = posts.pop()
         self.custom_assertEqual(post, get_user(self.author_client), form_data)
 
+    def test_author_edit_post(self):
+        """Проверка редактирования автором существующего поста."""
+        form_data = {
+            'text': f'Тестовый пост №{self.post.pk} изменен',
+            'group': Group.objects.create(slug='New_group_slug').pk,
+            'image': get_image('author_edit.gif', 'image/gif'),
+        }
+        self.assertRedirects(
+            self.author_client.post(self.EDIT_URL, data=form_data),
+            self.POST_URL
+        )
+        post = Post.objects.get(pk=self.post.pk)
+        self.custom_assertEqual(post, self.post.author, form_data)
+
+    def test_author_delete_post(self):
+        """Проверка удаления поста автором."""
+        self.assertIn(self.post, Post.objects.all())
+        self.assertRedirects(
+            self.author_client.post(self.DELETE_URL),
+            PROFILE_URL
+        )
+        self.assertNotIn(self.post, Post.objects.all())
+
+# -----------Anonymous/Not_author------------------------
     def test_anonymous_create_post(self):
         """Попытка анонима создать пост."""
         form_data = {
@@ -124,21 +150,7 @@ class PostFormTests(TestCase):
         )
         self.assertEqual(set(Post.objects.all()), posts)
 
-    def test_author_editting_post(self):
-        """Проверка редактирования автором существующего поста."""
-        form_data = {
-            'text': f'Тестовый пост №{self.post.pk} изменен',
-            'group': Group.objects.create(slug='New_group_slug').pk,
-            'image': get_image('author_edit.gif', 'image/gif'),
-        }
-        self.assertRedirects(
-            self.author_client.post(self.EDIT_URL, data=form_data),
-            self.POST_URL
-        )
-        post = Post.objects.get(pk=self.post.pk)
-        self.custom_assertEqual(post, self.post.author, form_data)
-
-    def test_anonymous_or_not_author_editing_post(self):
+    def test_anonymous_or_not_author_cannot_edit_or_delete_post(self):
         """Попытка анонима или не-автора отредактировать пост."""
         group = Group.objects.create(slug='New_group_slug')
         anonymous = {
@@ -151,11 +163,13 @@ class PostFormTests(TestCase):
             'group': group.pk,
             'image': get_image('another_edit.gif', 'image/gif'),
         }
-        for url, client, redir_url, form_data in (
-            (self.EDIT_URL, self.client, self.EDIT_REDIRECT_LOGIN, anonymous),
-            (self.EDIT_URL, self.another, self.POST_URL, another)
+        for client, url, redir_url, form_data in (
+            (self.client, self.EDIT_URL, self.EDIT_REDIRECT_LOGIN, anonymous),
+            (self.client, self.DELETE_URL, self.DELETE_REDIRECT_LOGIN, None),
+            (self.another, self.EDIT_URL, self.POST_URL, another),
+            (self.another, self.DELETE_URL, self.POST_URL, None),
         ):
-            with self.subTest(url=url):
+            with self.subTest(client=get_user(client), url=url):
                 self.assertRedirects(
                     client.post(url, data=form_data),
                     redir_url
@@ -166,20 +180,21 @@ class PostFormTests(TestCase):
                     Post.objects.get(pk=self.post.pk)
                 )
 
+# -------------Comments------------------------
     def test_authorized_add_comment(self):
         """Проверка создания комментария к посту
            авторизованным пользователем."""
         form_data = {'text': 'Проверка создания комментария к посту.'}
         comments = set(Comment.objects.all())
         self.assertRedirects(
-            self.author_client.post(self.COMMENT_URL, data=form_data),
+            self.another.post(self.COMMENT_URL, data=form_data),
             self.POST_URL
         )
         comments = set(Comment.objects.all()) - comments
         self.assertEqual(len(comments), 1)
         comment = comments.pop()
         self.assertEqual(comment.text, form_data['text'])
-        self.assertEqual(comment.author, self.author)
+        self.assertEqual(comment.author, get_user(self.another))
         self.assertEqual(comment.post, self.post)
 
     def test_anonymous_add_comment(self):
@@ -191,57 +206,3 @@ class PostFormTests(TestCase):
             self.COMMENT_REDIRECT_LOGIN
         )
         self.assertEqual(set(Comment.objects.all()), comments)
-
-    def test_author_delete_post(self):
-        """Проверка удаления поста автором."""
-        self.assertEqual(Post.objects.count(), 1)
-        new_group = Group.objects.create(slug='Delete_slug')
-        post = Post.objects.create(
-            author=self.user,
-            group=new_group
-        )
-        self.assertEqual(Post.objects.count(), 2)
-        self.assertTrue(
-            Post.objects.filter(
-                author=self.user,
-                group=new_group
-            ).exists()
-        )
-        self.assertRedirects(
-            self.another.post(
-                reverse('posts:post_delete', args=[post.pk])),
-            reverse('posts:profile', args=[self.user])
-        )
-        self.assertEqual(Post.objects.count(), 1)
-        self.assertFalse(
-            Post.objects.filter(
-                author=self.user,
-                group=new_group
-            ).exists()
-        )
-
-    def test_not_author_cannot_delete_post(self):
-        """Проверка - не автор не может удалить пост."""
-        self.assertEqual(Post.objects.count(), 1)
-        new_group = Group.objects.create(slug='Delete_slug')
-        post = Post.objects.create(
-            author=self.user,
-            group=new_group
-        )
-        DELETE_URL = reverse("posts:post_delete", args=[post.pk])
-        for client, redir_url in (
-            (self.client, f'{LOGIN_URL}?next={DELETE_URL}'),
-            (self.author_client, reverse("posts:post_detail", args=[post.pk])),
-        ):
-            with self.subTest(client=get_user(client)):
-                self.assertRedirects(
-                    client.post(reverse('posts:post_delete', args=[post.pk])),
-                    redir_url
-                )
-                self.assertEqual(Post.objects.count(), 2)
-                self.assertTrue(
-                    Post.objects.filter(
-                        author=self.user,
-                        group=new_group
-                    ).exists()
-                )

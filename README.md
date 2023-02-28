@@ -22,11 +22,13 @@
 [![Pytest](https://img.shields.io/badge/-Pytest-464646?logo=Pytest)](https://docs.pytest.org/en/latest/)
 [![Faker](https://img.shields.io/badge/-Faker-464646?logo=Python)](https://pypi.org/project/Faker/)
 [![Pillow](https://img.shields.io/badge/-Pillow-464646?logo=Python)](https://pypi.org/project/Pillow/)
-[![Requests](https://img.shields.io/badge/-Requests:%20HTTP%20for%20Humans-464646?logo=Python)](https://pypi.org/project/requests/)
 [![Requests](https://img.shields.io/badge/-Requests:_HTTP_for_Humans™-464646?logo=Python)](https://pypi.org/project/requests/)
-[![Django](https://www.djangoproject.com/m/img/badges/djangoproject120x25.gif)](https://www.djangoproject.com/)
-[![mixer](https://img.shields.io/badge/-mixer-464646?logo=mixer)](https://pypi.org/project/mixer/)
+
+[![Django](https://img.shields.io/badge/-Django-464646?logo=Django)](https://www.djangoproject.com/)
+[![Django](https://www.djangoproject.com/m/img/badges/djangosite80x15.gif)](https://www.djangoproject.com/)
+
 [![sorl-thumbnail](https://img.shields.io/badge/-sorl--thumbnail-464646?logo=Django)](https://pypi.org/project/sorl-thumbnail/)
+[![mixer](https://img.shields.io/badge/-mixer-464646?logo=Django)](https://pypi.org/project/mixer/)
 
 [⬆️Оглавление](#оглавление)
 

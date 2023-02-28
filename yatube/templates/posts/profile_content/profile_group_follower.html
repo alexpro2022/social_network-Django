@@ -1,0 +1,9 @@
+{% extends 'posts/profile_content/profile_generic.html' %}
+
+{% block profile_content %}
+
+    {% include 'posts/includes/switchers/profile_switcher.html' with follower_groups=True %}     
+
+    {% include 'posts/includes/list_view.html' with group_obj=True %}
+
+{% endblock %}

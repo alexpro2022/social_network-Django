@@ -1,0 +1,12 @@
+<h6>
+    <a class="btn btn-light"
+        href="{% url 'posts:group_list' group.slug %}">
+        #{{ group.title }}
+    </a>
+</h6>
+<p>
+    Постов: {{ group.posts.count }}<br>
+    Авторов: <br>
+    Подписок: {{ group.group_following.count }}
+</p>
+<p>{{ group.description|linebreaksbr|truncatechars:100 }}</p>

@@ -20,9 +20,12 @@
       <hr>
     {% endif %} 
 
-    {% include 'posts/includes/post_view.html' with no_post_info=True %}
-
-    {% include 'posts/includes/comments_list.html' %}
+    {% include 'posts/includes/views/post_view.html' with no_post_info=True %}
+    {% include 'posts/includes/comment_form.html' %}
+    {% for comment in post.comments.all %}
+      {% include 'posts/includes/comment_view.html' with user_ref=True %}
+    {% endfor %}
+    
 
   </div>
 

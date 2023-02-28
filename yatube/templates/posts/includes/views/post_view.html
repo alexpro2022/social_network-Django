@@ -38,24 +38,31 @@
     </ul></ul>
   </aside>    
 
-  <article class="col-12 col-md-4">
-    {% load thumbnail %}
+  {% if post.image %}
 
-    {% if no_post_info %}
-      {% thumbnail post.image  "500x500" as im %}
-        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-      {% endthumbnail %}
-    {% else %}
-      {% thumbnail post.image  "300x300" as im %}
-        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-      {% endthumbnail %}
-    {% endif %}
+    <article class="col-12 col-md-4">
+      {% load thumbnail %}
+      {% if no_post_info %}
+        {% thumbnail post.image  "500x500" as im %}
+          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endthumbnail %}
+      {% else %}
+        {% thumbnail post.image  "300x300" as im %}
+          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endthumbnail %}
+      {% endif %}
+    </article>
 
-  </article>
+    <article class="col-12 col-md-5">        
+      <p>{{ post.text|linebreaksbr }}</p>
+    </article>
 
-  <article class="col-12 col-md-5">        
-    <p>{{ post.text|linebreaksbr }}</p>
-  </article>
-  
+  {% else %}
+
+    <article class="col-12 col-md-9">        
+      <p>{{ post.text|linebreaksbr }}</p>
+    </article>
+    
+  {% endif %}
 </div> 
 

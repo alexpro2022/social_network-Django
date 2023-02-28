@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Сообщества{% endblock %} 
+
+
+{% block content %}
+  
+  <div class="container py-5">
+
+    {% include 'posts/includes/switchers/main_switcher.html' with groups=True %}
+    {% include 'posts/includes/switchers/switcher.html' with follow=True groups=True %}
+    {% include 'posts/includes/list_view.html' with group_obj=True %}
+    
+  </div>
+  
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'posts/profile_content/profile_generic.html' %}
+
+{% block profile_content %}
+
+    {% include 'posts/includes/switchers/profile_switcher.html' with comments=True %}     
+
+    {% for comment in author.comments.all %}
+        {% include 'posts/includes/comment_view.html' with post_ref=True %}
+    {% endfor %}
+
+{% endblock %}
+

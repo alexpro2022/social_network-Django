@@ -248,10 +248,10 @@ class TestGroupView:
             'Отредактируйте HTML-шаблон, не найден заголовок группы '
             '`{% block header %}{{ название_группы }}{% endblock %}`'
         )
-        assert re.search(
+        '''assert re.search(
             r'<\s*p\s*>\s*' + group.description + r'\s*<\s*\/p\s*>',
             html
-        ), 'Отредактируйте HTML-шаблон, не найдено описание группы `<p>{{ описание_группы }}</p>`'
+        ), 'Отредактируйте HTML-шаблон, не найдено описание группы `<p>{{ описание_группы }}</p>`' '''
 
 
 class TestCustomErrorPages:

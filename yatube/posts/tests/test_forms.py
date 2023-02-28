@@ -88,7 +88,7 @@ class PostFormTests(TestCase):
                 if is_edit is not None:
                     self.assertEqual(context['is_edit'], is_edit)
 
-# --------------Authirized/Author---------------------------
+# --------------Authorized/Author---------------------------
     def custom_assertEqual(self, post, author, form_data):
         self.assertEqual(post.author, author)
         self.assertEqual(post.text, form_data['text'])
@@ -151,7 +151,7 @@ class PostFormTests(TestCase):
         self.assertEqual(set(Post.objects.all()), posts)
 
     def test_anonymous_or_not_author_cannot_edit_or_delete_post(self):
-        """Попытка анонима или не-автора отредактировать пост."""
+        """Попытка анонима или не-автора отредактировать или удалить пост."""
         group = Group.objects.create(slug='New_group_slug')
         anonymous = {
             'text': 'Test anonymous to edit post',

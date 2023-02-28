@@ -1,0 +1,14 @@
+<h6>{{ author.get_full_name }}
+    <a class="btn btn-light"
+        href="{% url 'posts:profile' author.username %}">
+        @{{ author.username }}
+    </a> 
+</h6>
+
+<p>
+    Записей: {{ author.posts.count }}<br>
+    Комментариев: {{ author.comments.count }}<br>      
+    Подписчиков: {{ author.following.count }}<br>
+    Подписок на авторов: {{ author.follower.count}}<br>
+    Подписок на сообщества: {{ author.group_follower.count }}
+</p>

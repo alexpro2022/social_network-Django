@@ -1,40 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'posts/profile_content/profile_generic.html' %}
 
+{% block profile_content %}
 
-{% block title %}
-    Профайл пользователя {{ author.get_full_name }}
-{% endblock %}
+    {% include 'posts/includes/switchers/profile_switcher.html' with posts=True %}     
 
-
-{% block content %}
-
-  <div class="container py-5"> 
-
-    <h5>Профиль пользователя: @{{author.username}} /{{ author.get_full_name }}/ 
-
-      {% if user.is_authenticated and user != author %}
-        {% if following %}
-          <a class="btn btn-light"
-             href="{% url 'posts:profile_unfollow' author.username %}" 
-             role="button">Отписаться</a>
-        {% else %}
-          <a class="btn btn-primary"
-             href="{% url 'posts:profile_follow' author.username %}" 
-             role="button">Подписаться</a>
-        {% endif %}
-      {% endif %}
-
-    </h5>
-    
-    <h6>
-      Подписчиков: {{ author.following.count }}<br>
-      Подписан: {{ author.follower.count}}<br>
-      Записей: {{ author.posts.count }}<br>
-      Комментариев: {{ author.comments.count }}
-    </h6><hr>
-
-    {% include 'posts/includes/post_list_view.html' with no_profile_info=True %}
-    
-  </div> 
+    {% include 'posts/includes/list_view.html' with no_profile_info=True post_obj=True %}
 
 {% endblock %}

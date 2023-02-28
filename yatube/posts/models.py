@@ -115,3 +115,28 @@ class Follow(models.Model):
                 name='no_self_follow'
             ),
         ]
+
+
+class GroupFollow(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='group_follower',
+        verbose_name='Подписанный пользователь'
+    )
+    group = models.ForeignKey(
+        Group,
+        on_delete=models.CASCADE,
+        related_name='group_following',
+        verbose_name='Избранная группа'
+    )
+
+    class Meta:
+        verbose_name = 'Подписка на группу'
+        verbose_name_plural = 'Подписки на группы'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'group'],
+                name='group_unique_follow'
+            )
+        ]

@@ -161,6 +161,12 @@ class PostViewsTest(TestCase):
     def test_authenticated_user_follow_author(self):
         """Авторизованный пользователь (не автор) может подписываться
            на других пользователей."""
+        self.assertFalse(
+            Follow.objects.filter(
+                user=self.user,
+                author=self.author
+            ).exists()
+        )
         self.user_client.get(PROFILE_FOLLOW_URL)
         self.assertTrue(
             Follow.objects.filter(
@@ -172,11 +178,13 @@ class PostViewsTest(TestCase):
     def test_authenticated_user_unfollow_author(self):
         """Авторизованный пользователь (не автор) может удалять других
            пользователей из подписок."""
-        Follow.objects.create(
-            user=self.user,
-            author=self.author
+        self.assertTrue(
+            Follow.objects.filter(
+                user=self.follower_author,
+                author=self.author
+            ).exists()
         )
-        self.user_client.get(PROFILE_UNFOLLOW_URL)
+        self.follower_author_client.get(PROFILE_UNFOLLOW_URL)
         self.assertFalse(
             Follow.objects.filter(
                 user=self.user,

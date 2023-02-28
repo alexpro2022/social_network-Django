@@ -6,12 +6,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 # from django.urls import reverse_lazy
 
 from .forms import CommentForm, PostForm
-from .models import Follow, Group, Post, User
+from .models import Follow, GroupFollow, Group, Post, User
 from yatube.settings import POSTS_PER_PAGE
 
 
-def paginator(request, posts, per_page):
-    return Paginator(posts, per_page).get_page(request.GET.get('page'))
+def paginator(request, objects, per_page):
+    return Paginator(objects, per_page).get_page(request.GET.get('page'))
 
 
 def index(request):
@@ -20,19 +20,71 @@ def index(request):
     })
 
 
+def authors(request):
+    return render(request, 'posts/authors.html', {
+        'page_obj': paginator(request, User.objects.all(), 3)
+    })
+
+
+def authors_follow(request):
+    authors = User.objects.filter(following__user=request.user)
+    return render(request, 'posts/authors_follow.html', {
+        'page_obj': paginator(request, authors, 3)
+    })
+
+
+def groups(request):
+    return render(request, 'posts/groups.html', {
+        'page_obj': paginator(request, Group.objects.all(), 3)
+    })
+
+
+def groups_follow(request):  # , username, flag):
+    # follower = get_object_or_404(User, username=username)
+    # follower)
+    # if flag:
+    # template_name = 'posts/groups_follow.html'
+    # else:
+    # template_name = 'posts/profile_content/profile_group_follower.html'
+    groups = Group.objects.filter(group_following__user=request.user)
+    return render(request, 'posts/groups_follow.html', {
+        'page_obj': paginator(request, groups, 3)
+    })
+
+
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     return render(request, 'posts/group_list.html', {
         'group': group,
-        'page_obj': paginator(request, group.posts.all(), POSTS_PER_PAGE)
+        'page_obj': paginator(request, group.posts.all(), POSTS_PER_PAGE),
+        'following': (
+            request.user.is_authenticated
+            and GroupFollow.objects.filter(
+                user=request.user,
+                group=group).exists()
+        )
     })
 
 
-def profile(request, username):
-    author = get_object_or_404(User, username=username)
-    return render(request, 'posts/profile.html', {
+def group_description(request, slug):
+    group = get_object_or_404(Group, slug=slug)
+    return render(
+        request,
+        'posts/includes/views/group_description.html',
+        {'group': group,
+         'following': (
+             request.user.is_authenticated
+             and GroupFollow.objects.filter(
+                 user=request.user,
+                 group=group).exists()
+         )}
+    )
+
+
+def profile_generic(request, author, page_obj, template_name):
+    return render(request, template_name, {
         'author': author,
-        'page_obj': paginator(request, author.posts.all(), POSTS_PER_PAGE),
+        'page_obj': page_obj,
         'following': (
             request.user.is_authenticated
             and request.user != author
@@ -41,6 +93,66 @@ def profile(request, username):
                 author=author).exists()
         )
     })
+
+
+def profile(request, username):
+    author = get_object_or_404(User, username=username)
+    return profile_generic(
+        request,
+        author,
+        paginator(request, author.posts.all(), POSTS_PER_PAGE),
+        'posts/profile.html'
+    )
+
+
+def profile_comments(request, username):
+    author = get_object_or_404(User, username=username)
+    return profile_generic(
+        request,
+        author,
+        paginator(request, author.comments.all(), POSTS_PER_PAGE),
+        'posts/profile_content/profile_comments.html'
+    )
+
+
+def profile_following(request, username):
+    """Вывод списка пользователей, подписанных на автора."""
+    author = get_object_or_404(User, username=username)
+    return profile_generic(
+        request,
+        author,
+        paginator(
+            request,
+            User.objects.filter(follower__author=author),
+            POSTS_PER_PAGE),
+        'posts/profile_content/profile_following.html'
+    )
+
+
+def profile_follower(request, username):
+    """Вывод списка авторов, на которых подписан пользователь."""
+    follower = get_object_or_404(User, username=username)
+    return profile_generic(
+        request,
+        follower,
+        paginator(
+            request,
+            User.objects.filter(following__user=follower),
+            POSTS_PER_PAGE),
+        'posts/profile_content/profile_follower.html'
+    )
+
+
+def profile_group_follower(request, username):
+    """Вывод списка групп, на которые подписан пользователь."""
+    follower = get_object_or_404(User, username=username)
+    groups = Group.objects.filter(group_following__user=follower)
+    return profile_generic(
+        request,
+        follower,
+        paginator(request, groups, 3),
+        'posts/profile_content/profile_group_follower.html'
+    )
 
 
 def post_detail(request, post_id):
@@ -125,12 +237,29 @@ def profile_follow(request, username):
 
 
 @login_required
+def group_follow(request, slug):
+    GroupFollow.objects.get_or_create(
+        user=request.user,
+        group=get_object_or_404(Group, slug=slug))
+    return redirect('posts:group_list', slug=slug)
+
+
+@login_required
 def profile_unfollow(request, username):
     get_object_or_404(
         request.user.follower,
         author__username=username
     ).delete()
     return redirect('posts:profile', username=username)
+
+
+@login_required
+def group_unfollow(request, slug):
+    get_object_or_404(
+        request.user.group_follower,
+        group__slug=slug
+    ).delete()
+    return redirect('posts:group_list', slug=slug)
 
 
 '''

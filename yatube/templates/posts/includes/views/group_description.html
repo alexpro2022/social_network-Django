@@ -9,7 +9,8 @@
 {% block content %}
 
   <div class="container py-5">
-    
+
+
     {% if user.is_authenticated %}
       {% if following %}
         <a class="btn btn-light"
@@ -20,18 +21,12 @@
           href="{% url 'posts:group_follow' group.slug %}" 
           role="button">Подписаться</a>
       {% endif %}
-    {% endif %}    
+    {% endif %}     
 
-    {% include 'posts/includes/switchers/group_list_switcher.html' with group_tab=True %}
+    {% include 'posts/includes/switchers/group_list_switcher.html' with description_tab=True %}
 
-    {% for post in page_obj %} 
-      {% include 'posts/includes/views/post_view.html' with no_group_info=True %}
-      {% if not forloop.last %}<hr>{% endif %}
-    {% endfor %}
-
-    {% include 'posts/includes/paginator.html' %}
-    
+    <p>{{ group.description|linebreaksbr }}</p>
 
   </div>
 
-{% endblock %}
+{% endblock %}    

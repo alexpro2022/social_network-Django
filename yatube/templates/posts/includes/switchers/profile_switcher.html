@@ -1,0 +1,46 @@
+<div class="row my-3">
+    <ul class="nav nav-tabs">
+      <a class="btn btn-light"
+          href="{% url 'posts:profile' author.username %}">
+          @{{ author.username }}
+      </a>       
+      <li class="nav-item">
+        <a class="nav-link {% if posts %}active{% endif %}"
+          href="{% url 'posts:profile' author.username %}">
+          Записей: {{ author.posts.count }}
+        </a> 
+      </li>       
+
+      <li class="nav-item">
+        <a class="nav-link {% if comments %}active{% endif %}"
+          href="{% url 'posts:profile_comments' author.username %}">
+          Комментариев: {{ author.comments.count }}
+        </a> 
+      </li>  
+      
+      <li class="nav-item">
+        <a class="nav-link {% if followed %}active{% endif %}"
+          href="{% url 'posts:profile_following' author.username %}">
+          Подписчиков: {{ author.following.count }}
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link {% if follower_authors %}active{% endif %}"
+          href="{% url 'posts:profile_follower' author.username %}">
+          Подписок на авторов: {{ author.follower.count}}
+        </a>
+      </li>       
+
+      <li class="nav-item">
+        <a class="nav-link {% if follower_groups %}active{% endif %}"
+          href="{% url 'posts:profile_group_follower' author.username %}">
+          Подписок на сообщества: {{ author.group_follower.count }}
+        </a>
+      </li>      
+
+    </ul>
+</div>
+  
+    
+   

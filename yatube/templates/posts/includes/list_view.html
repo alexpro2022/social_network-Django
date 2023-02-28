@@ -1,0 +1,22 @@
+ {% if post_obj %}
+    {% for post in page_obj %}
+        {% include 'posts/includes/views/post_view.html' %}
+        {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}            
+{% endif %}
+
+{% if group_obj %}
+    {% for group in page_obj %}
+        {% include 'posts/includes/views/group_view.html' %}
+        {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}            
+{% endif %}
+
+{% if author_obj %}
+    {% for author in page_obj %}
+        {% include 'posts/includes/views/author_view.html' %}
+        {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}              
+{% endif %}
+
+{% include 'posts/includes/paginator.html' %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Избранные авторы{% endblock %} 
+
+
+{% block content %}
+  
+  <div class="container py-5">
+
+    {% include 'posts/includes/switchers/main_switcher.html' with authors=True %}
+    {% include 'posts/includes/switchers/switcher.html' with follow=True authors=True %}
+    {% include 'posts/includes/list_view.html' with author_obj=True %}
+    
+  </div>
+  
+{% endblock %}

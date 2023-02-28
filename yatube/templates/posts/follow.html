@@ -6,12 +6,12 @@
 {% block content %}
   
   <div class="container py-5">
+    {% include 'posts/includes/switchers/main_switcher.html' with posts=True %} 
 
-    <h5>Подписки</h5> 
-
-    {% include 'posts/includes/switcher.html' with follow=True %}
+    {% include 'posts/includes/switchers/switcher.html' with follow=True posts=True%}
+    <h5>Мои подписки:</h5>
     
-    {% include 'posts/includes/post_list_view.html' %}
+    {% include 'posts/includes/list_view.html' with post_obj=True %}
 
     
   </div>

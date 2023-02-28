@@ -1,0 +1,35 @@
+{% if user.is_authenticated %}
+  <div class="row my-3">
+    <ul class="nav nav-tabs">
+        
+      <li class="nav-item">
+        <a class="nav-link {% if index%}active{% endif %}"
+          {% if posts %}href="{% url 'posts:index' %}"{% endif %}
+          {% if authors %}href="{% url 'posts:authors' %}"{% endif %}
+          {% if groups %}href="{% url 'posts:groups' %}"{% endif %}
+        >
+          {% if posts %}Все записи{% endif %}
+          {% if authors %}Все авторы{% endif %}
+          {% if groups %}Все группы{% endif %}         
+          {% if index %}({{ page_obj.paginator.count }}){% endif %}
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link {% if follow %}active{% endif %}"
+          {% if posts %}href="{% url 'posts:follow_index' %}"{% endif %}
+          {% if authors %}href="{% url 'posts:authors_follow' %}"{% endif %}
+          {% if groups %}href="{% url 'posts:groups_follow' %}"{% endif %}          
+        >
+          {% if posts %}Записи подписок{% endif %}
+          {% if authors %}Избранные авторы{% endif %}
+          {% if groups %}Избранные группы{% endif %}
+
+          {% if follow %}({{ page_obj.paginator.count }}) пользователя {{ user.username }}
+          {% endif %}
+        </a> 
+      </li>
+
+    </ul>
+  </div>
+{% endif %}

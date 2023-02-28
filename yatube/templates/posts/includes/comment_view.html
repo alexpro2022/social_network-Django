@@ -1,0 +1,19 @@
+  <div class="media mb-4">
+    <div class="media-body">
+      {% if user_ref %}
+        <h6 class="mt-0">
+          <a href="{% url 'posts:profile' comment.author.username %}">
+            {{ comment.author.username }}
+          </a>
+        </h6>
+      {% endif %}
+      
+      {% if post_ref %}
+        <a href="{% url 'posts:post_detail' comment.post.pk %}">
+          Пост
+        </a>  
+      {% endif %}  
+      
+      <p>{{ comment.text|linebreaksbr }}</p>
+    </div>
+  </div>

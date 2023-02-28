@@ -2,7 +2,7 @@ from django.contrib.auth import get_user
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from ..models import Follow, Group, Post, User
+from posts.models import Follow, Group, Post, User
 
 
 SLUG = 'Test-slug'
@@ -40,7 +40,6 @@ class PostURLsTest(TestCase):
         cls.post = Post.objects.create(
             text='Тестовый пост',
             author=cls.author,
-            # group=cls.group
         )
         cls.follow = Follow.objects.create(
             user=cls.user,

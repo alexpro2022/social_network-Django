@@ -1,12 +1,10 @@
 from django.contrib.auth.decorators import login_required
-# from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-# from django.views.generic.edit import DeleteView
-# from django.urls import reverse_lazy
 
-from .forms import CommentForm, PostForm
-from .models import Follow, GroupFollow, Group, Post, User
+
+from posts.forms import CommentForm, PostForm
+from posts.models import Follow, GroupFollow, Group, Post, User
 from yatube.settings import POSTS_PER_PAGE
 
 
@@ -39,13 +37,7 @@ def groups(request):
     })
 
 
-def groups_follow(request):  # , username, flag):
-    # follower = get_object_or_404(User, username=username)
-    # follower)
-    # if flag:
-    # template_name = 'posts/groups_follow.html'
-    # else:
-    # template_name = 'posts/profile_content/profile_group_follower.html'
+def groups_follow(request):
     groups = Group.objects.filter(group_following__user=request.user)
     return render(request, 'posts/groups_follow.html', {
         'page_obj': paginator(request, groups, 3)
@@ -260,26 +252,3 @@ def group_unfollow(request, slug):
         group__slug=slug
     ).delete()
     return redirect('posts:group_list', slug=slug)
-
-
-'''
-
-@login_required
-def post_delete(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    if post.author != request.user:
-        post.delete()
-    return redirect('posts:index')
-
-
-class PostDeleteView(LoginRequiredMixin, DeleteView):
-    model = Post
-    template_name = 'posts/delete_post.html'
-    success_url = reverse_lazy('posts:index')
-
-
-
-    def delete(request, *args, **kwargs):
-        if request.user == Post.author:
-            super.delete(request, *args, **kwargs)
-'''

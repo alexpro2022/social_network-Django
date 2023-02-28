@@ -8,8 +8,8 @@ from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
 from .utils import get_image, posts_assertEqual
-from ..forms import CommentForm, PostForm
-from ..models import Comment, Group, Post, User
+from posts.forms import CommentForm, PostForm
+from posts.models import Comment, Group, Post, User
 
 
 USERNAME = 'author'

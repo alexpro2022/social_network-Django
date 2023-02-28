@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from ..urls import app_name
+from posts.urls import app_name
 
 
 SLUG = 'Test-slug'

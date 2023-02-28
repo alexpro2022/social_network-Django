@@ -25,8 +25,6 @@
 [![Requests](https://img.shields.io/badge/-Requests:_HTTP_for_Humans™-464646?logo=Python)](https://pypi.org/project/requests/)
 
 [![Django](https://img.shields.io/badge/-Django-464646?logo=Django)](https://www.djangoproject.com/)
-[![Django](https://www.djangoproject.com/m/img/badges/djangosite80x15.gif)](https://www.djangoproject.com/)
-
 [![sorl-thumbnail](https://img.shields.io/badge/-sorl--thumbnail-464646?logo=Django)](https://pypi.org/project/sorl-thumbnail/)
 [![mixer](https://img.shields.io/badge/-mixer-464646?logo=Django)](https://pypi.org/project/mixer/)
 

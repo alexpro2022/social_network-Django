@@ -89,7 +89,7 @@ pip list
 ```
 python yatube/manage.py runserver
 ```
-Серевер запустится локально по адресу http://127.0.0.1:8000/
+Сервер запустится локально по адресу http://127.0.0.1:8000/
 
 [⬆️Оглавление](#оглавление)
 
@@ -97,4 +97,4 @@ python yatube/manage.py runserver
 ## Автор:
 [Aleksei Proskuriakov](https://github.com/alexpro2022)
 
-[⬆️В начало](#Проект:-социальная-сеть-Yatube)
+[⬆️В начало](#Проект-социальная-сеть-Yatube)

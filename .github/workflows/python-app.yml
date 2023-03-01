@@ -29,8 +29,6 @@ jobs:
     - name: Run Tests
       run: |
         python -m flake8
-        # python -m pytest
-        # coverage run -m pytest
         pytest --cov --cov-report=xml
     - name: Upload coverage reports to Codecov with GitHub Action
       uses: codecov/codecov-action@v3

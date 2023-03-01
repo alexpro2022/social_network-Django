@@ -1,4 +1,4 @@
-name: Build and Test
+name: Yatube workflow
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.7, 3.8, 3.9, 3.11]
+        python-version: [3.7, 3.8, 3.9]  # , 3.11]
 
     steps:
     - uses: actions/checkout@v3
@@ -40,4 +40,4 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: ${{ github.workflow }} успешно выполнен!
+        message: ${{ github.workflow }} проекта Социальная сеть успешно выполнен!

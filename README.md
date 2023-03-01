@@ -37,7 +37,10 @@
 [![sorl-thumbnail](https://img.shields.io/badge/-sorl--thumbnail-464646?logo=Django)](https://pypi.org/project/sorl-thumbnail/)
 [![mixer](https://img.shields.io/badge/-mixer-464646?logo=Django)](https://pypi.org/project/mixer/)
 
-<!-- 4. CI/CD: -->
+<!-- 4. Базы данных: -->
+[![SQLite3](https://img.shields.io/badge/-SQLite3-464646?logo=SQLite)](https://www.sqlite.com/version3.html)
+
+<!-- 5. CI/CD: -->
 [![GitHub](https://img.shields.io/badge/-GitHub-464646?logo=GitHub)](https://docs.github.com/en)
 [![GitHub_Actions](https://img.shields.io/badge/-GitHub_Actions-464646?logo=GitHub)](https://docs.github.com/en/actions)
 

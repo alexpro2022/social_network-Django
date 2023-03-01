@@ -1,5 +1,5 @@
 # Проект: социальная сеть Yatube
-[![CI](https://github.com/yandex-praktikum/hw05_final/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/yandex-praktikum/hw05_final/actions/workflows/main.yml)
+[![CI](https://github.com/yandex-praktikum/hw05_final/actions/workflows/django.yml/badge.svg?branch=master)](https://github.com/yandex-praktikum/hw05_final/actions/workflows/django.yml)
 
 Социальная сеть для публикации личных дневников. Это сайт, на котором можно создать свою страницу. 
 Если на нее зайти, то можно посмотреть все записи автора.

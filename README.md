@@ -10,6 +10,7 @@
 Записи можно отправить в сообщество и посмотреть там записи разных авторов.
 
 
+
 ## Оглавление:
 - [Технологии](#технологии)
 - [Описание работы](#описание-работы)
@@ -18,32 +19,32 @@
 - [Автор](#автор)
 
 
+
 ## Технологии:
-### 1. Языки программирования, библиотеки и пакеты:
+<!-- 1. Языки программирования, библиотеки и пакеты: -->
 [![Python](https://warehouse-camo.ingress.cmh1.psfhosted.org/7c5873f1e0f4375465dfebd35bf18f678c74d717/68747470733a2f2f696d672e736869656c64732e696f2f707970692f707976657273696f6e732f7072657474797461626c652e7376673f6c6f676f3d707974686f6e266c6f676f436f6c6f723d464645383733)](https://www.python.org/)
 [![Requests](https://img.shields.io/badge/-Requests:_HTTP_for_Humans™-464646?logo=Python)](https://pypi.org/project/requests/)
 [![Pillow](https://img.shields.io/badge/-Pillow-464646?logo=Python)](https://pypi.org/project/Pillow/)
-
 [![HTML](https://img.shields.io/badge/-HTML-464646?logo=HTML)](https://html.spec.whatwg.org/multipage/)
 
-### 2. Тесты:
+<!-- 2. Тесты: -->
 [![Pytest](https://img.shields.io/badge/-Pytest-464646?logo=Pytest)](https://docs.pytest.org/en/latest/)
 [![Pytest-cov](https://img.shields.io/badge/-Pytest--cov-464646?logo=Pytest)](https://pytest-cov.readthedocs.io/en/latest/)
-[![Coverage](https://img.shields.io/badge/-Coverage-464646?logo=Python)](https://coverage.readthedocs.io/en/latest/)
 [![Faker](https://img.shields.io/badge/-Faker-464646?logo=Python)](https://pypi.org/project/Faker/)
 
-### 3. Фреймворки, библиотеки и пакеты:
+<!-- 3. Фреймворки, библиотеки и пакеты: -->
 [![Django](https://img.shields.io/badge/-Django-464646?logo=Django)](https://www.djangoproject.com/)
 [![sorl-thumbnail](https://img.shields.io/badge/-sorl--thumbnail-464646?logo=Django)](https://pypi.org/project/sorl-thumbnail/)
 [![mixer](https://img.shields.io/badge/-mixer-464646?logo=Django)](https://pypi.org/project/mixer/)
 
-### 4. CI/CD:
+<!-- 4. CI/CD: -->
 [![GitHub](https://img.shields.io/badge/-GitHub-464646?logo=GitHub)](https://docs.github.com/en)
 [![GitHub_Actions](https://img.shields.io/badge/-GitHub_Actions-464646?logo=GitHub)](https://docs.github.com/en/actions)
 
 [![Telegram](https://img.shields.io/badge/-Telegram-464646?logo=Telegram)](https://core.telegram.org/api)
 
 [⬆️Оглавление](#оглавление)
+
 
 
 ## Описание работы:
@@ -59,6 +60,7 @@
 - Записи можно отправить в сообщество и посмотреть там записи разных авторов.
 
 [⬆️Оглавление](#оглавление)
+
 
 
 ## Установка:
@@ -98,6 +100,7 @@ pip list
 [⬆️Оглавление](#оглавление)
 
 
+
 ## Запуск:
 Выполните команду:
 
@@ -107,6 +110,7 @@ python yatube/manage.py runserver
 Сервер запустится локально по адресу http://127.0.0.1:8000/
 
 [⬆️Оглавление](#оглавление)
+
 
 
 ## Автор:

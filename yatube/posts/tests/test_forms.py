@@ -6,11 +6,10 @@ from django.conf import settings
 from django.contrib.auth import get_user
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
-
-from .utils import get_image, posts_assertEqual
 from posts.forms import CommentForm, PostForm
 from posts.models import Comment, Group, Post, User
 
+from .utils import get_image, posts_assertEqual
 
 USERNAME = 'author'
 PROFILE_URL = reverse('posts:profile', args=[USERNAME])

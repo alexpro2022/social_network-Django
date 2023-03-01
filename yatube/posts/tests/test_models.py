@@ -1,7 +1,5 @@
 from django.test import TestCase
-
 from posts.models import Comment, Follow, Group, Post, User
-
 
 USERNAME = 'author'
 FIRST_NAME = 'Ivan'

@@ -1,8 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-
 from posts.urls import app_name
-
 
 SLUG = 'Test-slug'
 USERNAME = 'author'

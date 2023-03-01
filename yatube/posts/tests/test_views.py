@@ -5,11 +5,11 @@ from django.conf import settings
 from django.core.cache import cache
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
-
-from .utils import get_image, posts_assertEqual
 from posts.models import Comment, Follow, Group, Post, User
+
 from yatube.settings import POSTS_PER_PAGE
 
+from .utils import get_image, posts_assertEqual
 
 SLUG = 'Test-slug'
 NEW_TEST_SLUG = 'New_test_slug'

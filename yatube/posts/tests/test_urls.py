@@ -1,9 +1,7 @@
 from django.contrib.auth import get_user
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.urls import reverse
-
 from posts.models import Follow, Group, Post, User
-
 
 SLUG = 'Test-slug'
 USERNAME = 'author'

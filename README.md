@@ -1,6 +1,6 @@
 # Проект: социальная сеть Yatube
 [![status](https://github.com/alexpro2022/hw05_final/actions/workflows/python-app.yml/badge.svg)](https://github.com/alexpro2022/hw05_final/actions)
-[![codecov](https://app.codecov.io/gh/alexpro2022/hw05_final/branch/main/graph/badge.svg)](https://app.codecov.io/gh/alexpro2022/hw05_final)
+[![codecov](https://codecov.io/gh/alexpro2022/hw05_final/branch/master/graph/badge.svg?token=1ETL9DOJEB)](https://codecov.io/gh/alexpro2022/hw05_final)
 
 Социальная сеть для публикации личных дневников. Это сайт, на котором можно создать свою страницу. 
 Если на нее зайти, то можно посмотреть все записи автора.

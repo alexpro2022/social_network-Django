@@ -1,6 +1,7 @@
-from core.models import CreatedFieldModel
 from django.contrib.auth import get_user_model
 from django.db import models
+
+from core.models import CreatedFieldModel
 
 User = get_user_model()
 

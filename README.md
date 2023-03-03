@@ -23,7 +23,7 @@
 ## Технологии:
 
 
-**Языки программирования, модули и библиотеки:**
+**Языки программирования и библиотеки:**
 
 [![Python](https://warehouse-camo.ingress.cmh1.psfhosted.org/7c5873f1e0f4375465dfebd35bf18f678c74d717/68747470733a2f2f696d672e736869656c64732e696f2f707970692f707976657273696f6e732f7072657474797461626c652e7376673f6c6f676f3d707974686f6e266c6f676f436f6c6f723d464645383733)](https://www.python.org/)
 [![Requests](https://img.shields.io/badge/-Requests:_HTTP_for_Humans™-464646?logo=Python)](https://pypi.org/project/requests/)
@@ -35,7 +35,7 @@
 **Фреймворк, расширения и библиотеки:**
 
 [![Django](https://img.shields.io/badge/-Django-464646?logo=Django)](https://www.djangoproject.com/)
-[![sorl-thumbnail](https://img.shields.io/badge/-sorl--thumbnail-464646?logo=sorl-thumbnail)](https://pypi.org/project/sorl-thumbnail/)
+[![sorl-thumbnail](https://img.shields.io/badge/-sorl--thumbnail-464646?logo=sorl-thumbnail)](https://sorl-thumbnail.readthedocs.io/en/latest/)
 
 
 **База данных:**

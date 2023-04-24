@@ -1,5 +1,5 @@
 # Проект: социальная сеть Yatube
-[![status](https://github.com/alexpro2022/hw05_final/actions/workflows/python-app.yml/badge.svg)](https://github.com/alexpro2022/hw05_final/actions)
+[![Yatube CI/CD](https://github.com/alexpro2022/hw05_final/actions/workflows/main.yml/badge.svg)](https://github.com/alexpro2022/hw05_final/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/alexpro2022/hw05_final/branch/master/graph/badge.svg?token=1ETL9DOJEB)](https://codecov.io/gh/alexpro2022/hw05_final)
 
 Социальная сеть для публикации личных дневников. Это сайт, на котором можно создать свою страницу. 

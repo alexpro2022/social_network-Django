@@ -15,8 +15,9 @@ services:
       - db
     volumes:  
       - social_network_static_value:/app/static/      
+      - social_network_media_value:/app/media/      
     env_file:
-      - ../../.env
+      - ../../.env     
   
   nginx:
     image: nginx:1.21.3-alpine
@@ -28,7 +29,9 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - social_network_static_value:/var/html/static/
+      - social_network_media_value:/app/media/      
 
 volumes:
   social_network_postgres_data:   
-  social_network_static_value:  
+  social_network_static_value: 
+  social_network_media_value: 

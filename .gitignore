@@ -149,5 +149,5 @@ dmypy.json
 # static/
 # yatube/posts/static/
 # yatube/static/css/
-# yatube/media/
+yatube/media/
 

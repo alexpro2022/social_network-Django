@@ -87,6 +87,11 @@
 <details>
 <summary>Локальный запуск: сервер Django/SQLite или Docker-Compose/PostgreSQL</summary> 
 
+**!!! Для пользователей Windows обязательно выполнить команду:**
+```
+git config --global core.autocrlf false
+```
+  
 1. Клонируйте репозиторий с GitHub:
 ```
 git clone git@github.com:alexpro2022/social_network-Django.git

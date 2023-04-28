@@ -5,6 +5,8 @@ services:
     restart: always
     volumes:
       - social_network_postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=12345
     env_file:
       - ../../.env
 

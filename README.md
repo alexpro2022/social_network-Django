@@ -89,7 +89,7 @@
 
 1. Клонируйте репозиторий с GitHub:
 ```
-git@github.com:alexpro2022/social_network-Django.git
+git clone git@github.com:alexpro2022/social_network-Django.git
 ```
 
 2. Перейдите в созданную директорию проекта:

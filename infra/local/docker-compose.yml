@@ -15,7 +15,14 @@ services:
       - db
     volumes:  
       - social_network_static_value:/app/static/      
-      - social_network_media_value:/app/media/      
+      - social_network_media_value:/app/media/  
+    environment:
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345          
     env_file:
       - ../../.env     
   
@@ -29,7 +36,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - social_network_static_value:/var/html/static/
-      - social_network_media_value:/app/media/      
+      - social_network_media_value:/var/html/media/      
 
 volumes:
   social_network_postgres_data:   

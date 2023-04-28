@@ -76,14 +76,11 @@
 
 
 ## Установка и запуск:
-### Предварительные условия:
+### Предварительные условия для Docker Compose:
 Предполагается, что пользователь:
  - установил [Docker](https://docs.docker.com/engine/install/) и [Docker Compose](https://docs.docker.com/compose/install/) на локальной машине или на удаленном сервере, где проект будет запускаться в контейнерах. Проверить наличие можно выполнив команды:
     ```
-    docker --version
-    ```
-    ```
-    docker-compose --version
+    docker --version && docker-compose --version
     ```
  - создал аккаунт [DockerHub](https://hub.docker.com/), если запуск будет производится на удаленном сервере.
 <hr>
@@ -92,12 +89,12 @@
 
 1. Клонируйте репозиторий с GitHub:
 ```
-git@github.com:alexpro2022/social_network.git
+git@github.com:alexpro2022/social_network-Django.git
 ```
 
 2. Перейдите в созданную директорию проекта:
 ```
-cd social_network
+cd social_network-Django
 ```
 
 3. Скопируйте содержимое файла **env_example** (при этом будет создан файл *.env*):
@@ -186,6 +183,7 @@ USERNAME
 SSH_KEY    
 PASSPHRASE 
 
+# Учетные данные Телеграм-бота для получения сообщения о успешном завершении workflow:
 TELEGRAM_USER_ID 
 TELEGRAM_BOT_TOKEN 
 ```

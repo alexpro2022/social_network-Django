@@ -186,6 +186,14 @@ PASSPHRASE
 # Учетные данные Телеграм-бота для получения сообщения о успешном завершении workflow:
 TELEGRAM_USER_ID 
 TELEGRAM_BOT_TOKEN 
+
+# База данных:
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=postgres
+DB_HOST=db
+DB_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=12345
 ```
 
 3. Запустите вручную workflow, чтобы автоматически развернуть проект в трех docker-контейнерах (db, web, nginx) на удаленном сервере.

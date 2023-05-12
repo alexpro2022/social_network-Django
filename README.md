@@ -90,7 +90,7 @@
 </details>
 <hr>
 <details>
-<summary>Локальный запуск: сервер Django/SQLite или Docker-Compose/PostgreSQL</summary> 
+<summary>Локальный запуск</summary> 
 
 **!!! Для пользователей Windows обязательно выполнить команду:** иначе файл start.sh при клонировании будет бракован:
 ```
@@ -105,7 +105,7 @@ cp env_example .env && \
 nano .env
 ```
 <details>
-<summary>Локальный запуск: сервер Django/SQLite</summary>
+<summary>сервер Django/SQLite</summary>
 
 2. Создайте и активируйте виртуальное окружение:
    * Если у вас Linux/macOS
@@ -134,7 +134,7 @@ python yatube/manage.py runserver
 5. Остановить сервер Django можно комбинацией клавиш Ctl-C.
 </details>
 <details>
-<summary>Локальный запуск: Docker Compose</summary>
+<summary>Docker Compose</summary>
 
 2. Из корневой директории проекта выполните команду:
 ```
@@ -151,10 +151,11 @@ docker compose -f infra/local/docker-compose.yml down
 docker compose -f infra/local/docker-compose.yml down -v
 ```
 </details>
+<hr>  
 </details>
-<hr>
+
 <details>
-<summary>Запуск на удаленном сервере: Docker Compose</summary>
+<summary>Запуск на удаленном сервере</summary>
 
 1. Сделайте [форк](https://docs.github.com/en/get-started/quickstart/fork-a-repo) в свой репозиторий.
 

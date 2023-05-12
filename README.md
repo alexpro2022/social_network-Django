@@ -105,7 +105,7 @@ cp env_example .env && \
 nano .env
 ```
 <details>
-<summary>сервер Django/SQLite</summary>
+<summary>сервер Django/SQLite3</summary>
 
 2. Создайте и активируйте виртуальное окружение:
    * Если у вас Linux/macOS
@@ -134,7 +134,7 @@ python yatube/manage.py runserver
 5. Остановить сервер Django можно комбинацией клавиш Ctl-C.
 </details>
 <details>
-<summary>Docker Compose</summary>
+<summary>Docker Compose/PostgreSQL</summary>
 
 2. Из корневой директории проекта выполните команду:
 ```

@@ -79,12 +79,15 @@
 ## Установка и запуск:
 Удобно использовать принцип copy-paste - копировать команды из GitHub Readme и вставлять в командную строку Git Bash или IDE (например VSCode).
 ### Предварительные условия для Docker Compose:
+<details><summary>Развернуть</summary>
+
 Предполагается, что пользователь:
  - создал аккаунт [DockerHub](https://hub.docker.com/), если запуск будет производиться на удаленном сервере.
  - установил [Docker](https://docs.docker.com/engine/install/) и [Docker Compose](https://docs.docker.com/compose/install/) на локальной машине или на удаленном сервере, где проект будет запускаться в контейнерах. Проверить наличие можно выполнив команды:
     ```
     docker --version && docker-compose --version
     ```
+</details>
 <hr>
 <details>
 <summary>Локальный запуск: сервер Django/SQLite или Docker-Compose/PostgreSQL</summary> 

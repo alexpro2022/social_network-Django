@@ -15,7 +15,7 @@
 
 
 ## Технологии:
-
+<details><summary>Развернуть</summary>
 
 **Языки программирования, библиотеки и модули:**
 
@@ -56,6 +56,7 @@
 [![Telegram](https://img.shields.io/badge/-Telegram-464646?logo=Telegram)](https://core.telegram.org/api)
 
 [⬆️Оглавление](#оглавление)
+</details>
 
 
 
@@ -76,19 +77,19 @@
 
 
 ## Установка и запуск:
-Удобно использовать copy-paste - команды копировать из GitHub Readme и вставить в командную строку Git Bash или IDE (например VSCode).
+Удобно использовать принцип copy-paste - копировать команды из GitHub Readme и вставлять в командную строку Git Bash или IDE (например VSCode).
 ### Предварительные условия для Docker Compose:
 Предполагается, что пользователь:
+ - создал аккаунт [DockerHub](https://hub.docker.com/), если запуск будет производиться на удаленном сервере.
  - установил [Docker](https://docs.docker.com/engine/install/) и [Docker Compose](https://docs.docker.com/compose/install/) на локальной машине или на удаленном сервере, где проект будет запускаться в контейнерах. Проверить наличие можно выполнив команды:
     ```
     docker --version && docker-compose --version
     ```
- - создал аккаунт [DockerHub](https://hub.docker.com/), если запуск будет производится на удаленном сервере.
 <hr>
 <details>
 <summary>Локальный запуск: сервер Django/SQLite или Docker-Compose/PostgreSQL</summary> 
 
-**!!! Для пользователей Windows обязательно выполнить команду:** иначе файл start.sh будет бракован:
+**!!! Для пользователей Windows обязательно выполнить команду:** иначе файл start.sh при клонировании будет бракован:
 ```
 git config --global core.autocrlf false
 ```

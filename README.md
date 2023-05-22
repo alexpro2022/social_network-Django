@@ -1,6 +1,7 @@
 # Проект: социальная сеть Yatube
 [![Yatube CI/CD](https://github.com/alexpro2022/hw05_final/actions/workflows/main.yml/badge.svg)](https://github.com/alexpro2022/hw05_final/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/alexpro2022/hw05_final/branch/master/graph/badge.svg?token=1ETL9DOJEB)](https://codecov.io/gh/alexpro2022/hw05_final)
+[![Visits Badge](https://badges.pufler.dev/visits/pujux/badge-it)](https://badges.pufler.dev)
 
 Социальная сеть для публикации личных дневников. 
 

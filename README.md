@@ -99,7 +99,7 @@ git config --global core.autocrlf false
 
 1. Клонируйте репозиторий с GitHub и введите данные для переменных окружения (значения даны для примера, но их можно оставить):
 ```
-git clone git@github.com:alexpro2022/social_network-Django.git && \
+git clone https://github.com/alexpro2022/social_network-Django.git && \
 cd social_network-Django && \
 cp env_example .env && \
 nano .env

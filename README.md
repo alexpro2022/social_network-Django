@@ -98,17 +98,21 @@
 git config --global core.autocrlf false
 ```
 
-1. Клонируйте репозиторий с GitHub и введите данные для переменных окружения (значения даны для примера, но их можно оставить):
+1. Клонируйте репозиторий с GitHub: 
 ```
 git clone https://github.com/alexpro2022/social_network-Django.git && \
-cd social_network-Django && \
+cd social_network-Django
+```
+
+<details><summary>сервер Django/SQLite3</summary>
+
+2. Введите данные для переменных окружения (значения даны для примера, но их можно оставить):
+```
 cp env_example .env && \
 nano .env
 ```
-<details>
-<summary>сервер Django/SQLite3</summary>
 
-2. Создайте и активируйте виртуальное окружение:
+3. Создайте и активируйте виртуальное окружение:
    * Если у вас Linux/macOS
    ```
     python -m venv venv && source venv/bin/activate
@@ -118,12 +122,12 @@ nano .env
     python -m venv venv && source venv/Scripts/activate
    ```
 
-3. Установите в виртуальное окружение все необходимые зависимости из файла **requirements.txt**:
+4. Установите в виртуальное окружение все необходимые зависимости из файла **requirements.txt**:
 ```
 python -m pip install --upgrade pip && pip install -r yatube/requirements.txt
 ```
 
-4. Выполните миграции, создайте суперюзера (потребуется ввод персональных данных) и запустите приложение:
+5. Выполните миграции, создайте суперюзера (потребуется ввод персональных данных) и запустите приложение:
 ```
 cd yatube
 python manage.py makemigrations && \
@@ -136,18 +140,24 @@ cd ..
 ```
 Сервер запустится локально по адресу http://127.0.0.1:8000/
 
-5. Остановить сервер Django можно комбинацией клавиш Ctl-C.
-</details>
-<details>
-<summary>Docker Compose/PostgreSQL</summary>
+6. Остановить сервер Django можно комбинацией клавиш Ctl-C.
+<hr></details>
 
-2. Из корневой директории проекта выполните команду:
+<details><summary>Docker Compose/PostgreSQL</summary>
+
+2. Введите данные для переменных окружения (значения даны для примера, но их можно оставить):
+```
+cp env_docker .env && \
+nano .env
+```
+
+3. Из корневой директории проекта выполните команду:
 ```
 docker compose -f infra/local/docker-compose.yml up -d --build
 ```
 Проект будет развернут в трех docker-контейнерах (db, web, nginx) по адресу http://localhost.
 
-3. Остановить docker и удалить контейнеры можно командой из корневой директории проекта:
+4. Остановить docker и удалить контейнеры можно командой из корневой директории проекта:
 ```
 docker compose -f infra/local/docker-compose.yml down
 ```
@@ -155,12 +165,9 @@ docker compose -f infra/local/docker-compose.yml down
 ```
 docker compose -f infra/local/docker-compose.yml down -v
 ```
-</details>
-<hr>  
-</details>
+</details><hr></details>
 
-<details>
-<summary>Запуск на удаленном сервере</summary>
+<details><summary>Запуск на удаленном сервере</summary>
 
 1. Сделайте [форк](https://docs.github.com/en/get-started/quickstart/fork-a-repo) в свой репозиторий.
 
@@ -216,7 +223,7 @@ POSTGRES_PASSWORD=12345
 ## Удаление:
 Для удаления проекта выполните следующие действия:
 ```
-cd .. && rm -fr social_network-Django
+cd .. && rm -fr social_network-Django && deactivate
 ```
   
 [⬆️Оглавление](#оглавление)

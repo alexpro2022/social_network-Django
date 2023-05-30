@@ -124,10 +124,14 @@ python -m pip install --upgrade pip && pip install -r yatube/requirements.txt
 
 4. Выполните миграции, создайте суперюзера (потребуется ввод персональных данных) и запустите приложение:
 ```
-python yatube/manage.py makemigrations && \
-python yatube/manage.py migrate && \
-python yatube/manage.py createsuperuser && \
-python yatube/manage.py runserver
+cd yatube
+python manage.py makemigrations && \
+python manage.py migrate && \
+python manage.py prepare_load_data && \
+python manage.py loaddata dump.json && \
+python manage.py createsuperuser && \
+python manage.py runserver
+cd ..
 ```
 Сервер запустится локально по адресу http://127.0.0.1:8000/
 

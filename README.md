@@ -204,7 +204,7 @@ POSTGRES_PASSWORD=12345
 </details>
 <hr>
 
-Вход в админ-зону осуществляется по адресу: http://<hostname/admin>/ , где <hostname>:
+Вход в админ-зону осуществляется по адресу: http://`hostname`/admin/ , где `hostname`:
   * 127.0.0.1:8000
   * localhost
   * IP-адрес удаленного сервера  

@@ -1,4 +1,4 @@
-# Проект: социальная сеть Yatube
+# Социальная сеть
 [![Yatube CI/CD](https://github.com/alexpro2022/hw05_final/actions/workflows/main.yml/badge.svg)](https://github.com/alexpro2022/hw05_final/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/alexpro2022/hw05_final/branch/master/graph/badge.svg?token=1ETL9DOJEB)](https://codecov.io/gh/alexpro2022/hw05_final)
 
@@ -10,6 +10,7 @@
 - [Технологии](#технологии)
 - [Описание работы](#описание-работы)
 - [Установка и запуск](#установка-и-запуск)
+- [Удаление](#удаление)
 - [Автор](#автор)
 
 
@@ -196,7 +197,7 @@ POSTGRES_PASSWORD=12345
 </details>
 <hr>
 
-Вход в админ-зону осуществляется по адресу: http://hostname/admin/ , где hostname:
+Вход в админ-зону осуществляется по адресу: http://<hostname/admin>/ , где <hostname>:
   * 127.0.0.1:8000
   * localhost
   * IP-адрес удаленного сервера  
@@ -211,8 +212,19 @@ POSTGRES_PASSWORD=12345
 [⬆️Оглавление](#оглавление)
 
 
+## Удаление:
+Для удаления проекта выполните следующие действия:
+```
+deactivate && \
+cd .. && \
+rm -r social_network-Django
+```
+  
+[⬆️Оглавление](#оглавление)
+  
+
 
 ## Автор:
 [Aleksei Proskuriakov](https://github.com/alexpro2022)
 
-[⬆️В начало](#Проект-социальная-сеть-Yatube)
+[⬆️В начало](Социальная-сеть)

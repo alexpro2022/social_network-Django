@@ -227,4 +227,4 @@ rm -r social_network-Django
 ## Автор:
 [Aleksei Proskuriakov](https://github.com/alexpro2022)
 
-[⬆️В начало](Социальная-сеть)
+[⬆️В начало](#социальная-сеть)

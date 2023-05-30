@@ -85,7 +85,7 @@
 Предполагается, что пользователь:
  - создал аккаунт [DockerHub](https://hub.docker.com/), если запуск будет производиться на удаленном сервере.
  - установил [Docker](https://docs.docker.com/engine/install/) и [Docker Compose](https://docs.docker.com/compose/install/) на локальной машине или на удаленном сервере, где проект будет запускаться в контейнерах. Проверить наличие можно выполнив команды:
-    ```
+    ```bash
     docker --version && docker-compose --version
     ```
 </details>
@@ -94,12 +94,12 @@
 <summary>Локальный запуск</summary> 
 
 **!!! Для пользователей Windows обязательно выполнить команду:** иначе файл start.sh при клонировании будет бракован:
-```
+```bash
 git config --global core.autocrlf false
 ```
 
 1. Клонируйте репозиторий с GitHub: 
-```
+```bash
 git clone https://github.com/alexpro2022/social_network-Django.git && \
 cd social_network-Django
 ```
@@ -107,28 +107,28 @@ cd social_network-Django
 <details><summary>сервер Django/SQLite3</summary>
 
 2. Введите данные для переменных окружения (значения даны для примера, но их можно оставить):
-```
+```bash
 cp env_example .env && \
 nano .env
 ```
 
 3. Создайте и активируйте виртуальное окружение:
    * Если у вас Linux/macOS
-   ```
+   ```bash
     python -m venv venv && source venv/bin/activate
    ```
    * Если у вас Windows
-   ```
+   ```bash
     python -m venv venv && source venv/Scripts/activate
    ```
 
 4. Установите в виртуальное окружение все необходимые зависимости из файла **requirements.txt**:
-```
+```bash
 python -m pip install --upgrade pip && pip install -r yatube/requirements.txt
 ```
 
 5. Выполните миграции, создайте суперюзера (потребуется ввод персональных данных) и запустите приложение:
-```
+```bash
 cd yatube
 python manage.py makemigrations && \
 python manage.py migrate && \
@@ -146,23 +146,23 @@ cd ..
 <details><summary>Docker Compose/PostgreSQL</summary>
 
 2. Введите данные для переменных окружения (значения даны для примера, но их можно оставить):
-```
+```bash
 cp env_docker .env && \
 nano .env
 ```
 
 3. Из корневой директории проекта выполните команду:
-```
+```bash
 docker compose -f infra/local/docker-compose.yml up -d --build
 ```
 Проект будет развернут в трех docker-контейнерах (db, web, nginx) по адресу http://localhost.
 
 4. Остановить docker и удалить контейнеры можно командой из корневой директории проекта:
-```
+```bash
 docker compose -f infra/local/docker-compose.yml down
 ```
 Если также необходимо удалить тома базы данных, статики и медиа:
-```
+```bash
 docker compose -f infra/local/docker-compose.yml down -v
 ```
 </details><hr></details>
@@ -172,7 +172,7 @@ docker compose -f infra/local/docker-compose.yml down -v
 1. Сделайте [форк](https://docs.github.com/en/get-started/quickstart/fork-a-repo) в свой репозиторий.
 
 2. Создайте Actions.Secrets согласно списку ниже + переменные окружения из env_example файла:
-```
+```py
 PROJECT_NAME
 SECRET_KEY 
 
@@ -214,7 +214,7 @@ POSTGRES_PASSWORD=12345
 При первом запуске будут автоматически произведены следующие действия:    
   * выполнены миграции БД
   * БД заполнена начальными данными
-  * создан суперюзер (пользователь с правами админа) с учетными данными из переменных окружения DJANGO_SUPERUSER_USERNAME,DJANGO_SUPERUSER_EMAIL, DJANGO_SUPERUSER_PASSWORD.
+  * создан суперюзер (пользователь с правами админа) с учетными данными из переменных окружения `DJANGO_SUPERUSER_USERNAME`, `DJANGO_SUPERUSER_EMAIL`, `DJANGO_SUPERUSER_PASSWORD`.
   * собрана статика
 
 [⬆️Оглавление](#оглавление)
@@ -222,7 +222,7 @@ POSTGRES_PASSWORD=12345
 
 ## Удаление:
 Для удаления проекта выполните следующие действия:
-```
+```bash
 cd .. && rm -fr social_network-Django && deactivate
 ```
   

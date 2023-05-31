@@ -108,8 +108,7 @@ cd social_network-Django
 
 2. Введите данные для переменных окружения (значения даны для примера, но их можно оставить):
 ```bash
-cp env_example .env && \
-nano .env
+cp env_example .env && nano .env
 ```
 
 3. Создайте и активируйте виртуальное окружение:
@@ -129,14 +128,13 @@ python -m pip install --upgrade pip && pip install -r yatube/requirements.txt
 
 5. Выполните миграции, создайте суперюзера (потребуется ввод персональных данных) и запустите приложение:
 ```bash
-cd yatube
+cd yatube && \
 python manage.py makemigrations && \
 python manage.py migrate && \
 python manage.py prepare_load_data && \
 python manage.py loaddata dump.json && \
 python manage.py createsuperuser && \
-python manage.py runserver
-cd ..
+python manage.py runserver && cd ..
 ```
 Сервер запустится локально по адресу http://127.0.0.1:8000/
 
@@ -147,8 +145,7 @@ cd ..
 
 2. Введите данные для переменных окружения (значения даны для примера, но их можно оставить):
 ```bash
-cp env_docker .env && \
-nano .env
+cp env_docker .env && nano .env
 ```
 
 3. Из корневой директории проекта выполните команду:
@@ -171,7 +168,7 @@ docker compose -f infra/local/docker-compose.yml down -v
 
 1. Сделайте [форк](https://docs.github.com/en/get-started/quickstart/fork-a-repo) в свой репозиторий.
 
-2. Создайте Actions.Secrets согласно списку ниже + переменные окружения из env_example файла:
+2. Создайте `Actions.Secrets` согласно списку ниже + переменные окружения из **env_example** файла:
 ```py
 PROJECT_NAME
 SECRET_KEY 
@@ -200,7 +197,7 @@ POSTGRES_USER=postgres
 POSTGRES_PASSWORD=12345
 ```
 
-3. Запустите вручную workflow, чтобы автоматически развернуть проект в трех docker-контейнерах (db, web, nginx) на удаленном сервере.
+3. Запустите вручную `workflow`, чтобы автоматически развернуть проект в трех docker-контейнерах `db, web, nginx` на удаленном сервере.
 </details>
 <hr>
 

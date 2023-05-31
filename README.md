@@ -1,6 +1,6 @@
 # Социальная сеть
-[![Yatube CI/CD](https://github.com/alexpro2022/hw05_final/actions/workflows/main.yml/badge.svg)](https://github.com/alexpro2022/hw05_final/actions/workflows/main.yml)
-[![codecov](https://codecov.io/gh/alexpro2022/hw05_final/branch/master/graph/badge.svg?token=1ETL9DOJEB)](https://codecov.io/gh/alexpro2022/hw05_final)
+[![Yatube CI/CD](https://github.com/alexpro2022/social_network-Django/actions/workflows/main.yml/badge.svg)](https://github.com/alexpro2022/social_network-Django/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/alexpro2022/social_network-Django/branch/master/graph/badge.svg?token=1ETL9DOJEB)](https://codecov.io/gh/alexpro2022/social_network-Django)
 
 Социальная сеть для публикации личных дневников. 
 
